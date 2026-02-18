@@ -239,7 +239,58 @@ cat logs/status.json
 
 ---
 
-## 10) 重要提醒
+## 10) 无 Key 信息抓取白名单（接入 days 汇报输入）
+
+新增：`news_whitelist_fetcher.py` + `config/sources.whitelist.json`
+
+目标：不用 Brave API key，直接抓公开白名单来源（官方公告 / 主流媒体 / 数据站 / X 白名单 via Nitter RSS）。
+
+### 10.1 运行
+
+```bash
+cd polymarket-bot
+python3 news_whitelist_fetcher.py
+```
+
+可选参数：
+
+```bash
+python3 news_whitelist_fetcher.py \
+  --config config/sources.whitelist.json \
+  --out data/days_news_input.json \
+  --timeout 10 \
+  --retries 2 \
+  --retry-sleep 1.0 \
+  --limit 200
+```
+
+### 10.2 输出结构（统一）
+
+产物 1：`data/days_news_input.json`
+
+- `items[*].title`
+- `items[*].url`
+- `items[*].source`
+- `items[*].publishedAt`
+- `items[*].confidence`
+
+产物 2：`data/days_news_input.jsonl`（同字段，单行一条，方便流水线）
+
+### 10.3 交叉验证规则
+
+- 先按 `category + 标题归一化` 聚合同类信息
+- 若**至少 2 个不同来源 + 2 个不同域名**命中同类信息，则 `confidence=0.9`（高可信）
+- 否则使用来源基础权重（`sources.whitelist.json` 中可维护）
+
+### 10.4 days 汇报接入建议
+
+days 只需读取 `data/days_news_input.json` 的 `items` 字段即可直接汇报。
+推荐筛选：
+
+- 高可信优先：`confidence >= 0.9`
+- 时间窗口：最近 24h
+
+## 11) 重要提醒
 
 - 真实资金风险很高，务必先跑 `DRY_RUN=true`
 - 交易所 API / 市场结构可能变化，建议每天先小额验证

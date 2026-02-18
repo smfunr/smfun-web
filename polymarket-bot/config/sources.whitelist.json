@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "updatedAt": "2026-02-19T05:20:00+07:00",
+  "description": "No-key public sources whitelist for daily intelligence collection",
+  "categories": {
+    "official": [
+      {
+        "name": "Federal Reserve Press Releases",
+        "type": "rss",
+        "url": "https://www.federalreserve.gov/feeds/press_all.xml",
+        "weight": 0.95
+      },
+      {
+        "name": "US Treasury News",
+        "type": "rss",
+        "url": "https://home.treasury.gov/news/press-releases/feed",
+        "weight": 0.92
+      },
+      {
+        "name": "SEC Press Releases",
+        "type": "rss",
+        "url": "https://www.sec.gov/rss/news/press.xml",
+        "weight": 0.9
+      }
+    ],
+    "media": [
+      {
+        "name": "Reuters World News",
+        "type": "rss",
+        "url": "https://feeds.reuters.com/reuters/worldNews",
+        "weight": 0.82
+      },
+      {
+        "name": "Bloomberg Markets",
+        "type": "rss",
+        "url": "https://feeds.bloomberg.com/markets/news.rss",
+        "weight": 0.82
+      },
+      {
+        "name": "Financial Times World",
+        "type": "rss",
+        "url": "https://www.ft.com/world?format=rss",
+        "weight": 0.8
+      },
+      {
+        "name": "CoinDesk",
+        "type": "rss",
+        "url": "https://www.coindesk.com/arc/outboundfeeds/rss/",
+        "weight": 0.78
+      }
+    ],
+    "data": [
+      {
+        "name": "FRED Recent Updates",
+        "type": "rss",
+        "url": "https://fredblog.stlouisfed.org/feed/",
+        "weight": 0.86
+      },
+      {
+        "name": "CryptoCompare News",
+        "type": "rss",
+        "url": "https://min-api.cryptocompare.com/data/v2/news/?lang=EN",
+        "weight": 0.72,
+        "format": "json"
+      }
+    ],
+    "x_whitelist": [
+      {
+        "name": "FED via Nitter",
+        "type": "rss",
+        "url": "https://nitter.net/federalreserve/rss",
+        "weight": 0.62
+      },
+      {
+        "name": "Reuters via Nitter",
+        "type": "rss",
+        "url": "https://nitter.net/Reuters/rss",
+        "weight": 0.62
+      },
+      {
+        "name": "WSJ Markets via Nitter",
+        "type": "rss",
+        "url": "https://nitter.net/WSJmarkets/rss",
+        "weight": 0.58
+      }
+    ]
+  }
+}
