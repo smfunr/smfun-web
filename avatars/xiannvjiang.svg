@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-label="仙女酱头像">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffb7d5"/>
+      <stop offset="100%" stop-color="#c6b3ff"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#fff8ff" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#fff8ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1024" height="1024" rx="220" fill="url(#bg)"/>
+  <circle cx="512" cy="420" r="290" fill="url(#glow)"/>
+  <ellipse cx="390" cy="390" rx="95" ry="60" fill="#ffffff" fill-opacity="0.55" transform="rotate(-18 390 390)"/>
+  <ellipse cx="634" cy="390" rx="95" ry="60" fill="#ffffff" fill-opacity="0.55" transform="rotate(18 634 390)"/>
+  <circle cx="430" cy="450" r="24" fill="#5f4b8b"/>
+  <circle cx="594" cy="450" r="24" fill="#5f4b8b"/>
+  <path d="M430 560c45 32 119 32 164 0" fill="none" stroke="#7a4aa8" stroke-width="22" stroke-linecap="round"/>
+  <path d="M512 218l36 72 80 12-58 56 14 80-72-38-72 38 14-80-58-56 80-12z" fill="#fff7a8" stroke="#f7d94a" stroke-width="10"/>
+  <text x="512" y="760" text-anchor="middle" font-size="102" font-family="PingFang SC, Microsoft YaHei, sans-serif" fill="#ffffff" font-weight="700">仙女酱</text>
+  <text x="512" y="842" text-anchor="middle" font-size="46" font-family="PingFang SC, Microsoft YaHei, sans-serif" fill="#ffffff" fill-opacity="0.92">Cyber Fairy ✨</text>
+</svg>
