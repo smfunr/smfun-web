@@ -1,0 +1,188 @@
+#!/usr/bin/env bash
+set -u
+
+ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ENV_FILE="$ROOT_DIR/.env"
+
+pass_count=0
+fail_count=0
+warn_count=0
+
+passes=()
+fails=()
+warns=()
+
+pass() {
+  pass_count=$((pass_count + 1))
+  passes+=("$1")
+  echo "✅ PASS: $1"
+}
+
+fail() {
+  fail_count=$((fail_count + 1))
+  fails+=("$1")
+  echo "❌ FAIL: $1"
+}
+
+warn() {
+  warn_count=$((warn_count + 1))
+  warns+=("$1")
+  echo "⚠️  WARN: $1"
+}
+
+get_env_value() {
+  local key="$1"
+  if [[ ! -f "$ENV_FILE" ]]; then
+    echo ""
+    return
+  fi
+  local line
+  line=$(grep -E "^[[:space:]]*${key}=" "$ENV_FILE" | tail -n 1 || true)
+  line="${line#*=}"
+  # 去掉首尾空白
+  line="$(echo "$line" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')"
+  # 去掉包裹引号
+  line="${line%\"}"
+  line="${line#\"}"
+  line="${line%\'}"
+  line="${line#\'}"
+  echo "$line"
+}
+
+is_placeholder() {
+  local v="$1"
+  [[ -z "$v" || "$v" == "0xYOUR_PRIVATE_KEY" || "$v" == "YOUR_PRIVATE_KEY" ]]
+}
+
+echo "== ben | polymarket-bot 启动前自检 =="
+
+echo "[1/5] 检查 .env 与关键项"
+if [[ ! -f "$ENV_FILE" ]]; then
+  fail ".env 不存在（请先从 .env.auto.example 或 .env.example 复制）"
+else
+  pass ".env 文件存在"
+
+  dry_run_val="$(get_env_value "DRY_RUN")"
+  log_dir_val="$(get_env_value "LOG_DIR")"
+  poly_pk_val="$(get_env_value "POLY_PRIVATE_KEY")"
+  up_token_val="$(get_env_value "UP_TOKEN_ID")"
+  down_token_val="$(get_env_value "DOWN_TOKEN_ID")"
+
+  if [[ -z "$dry_run_val" ]]; then
+    fail "DRY_RUN 未配置"
+  else
+    pass "DRY_RUN 已配置"
+  fi
+
+  if [[ -z "$log_dir_val" ]]; then
+    fail "LOG_DIR 未配置"
+  else
+    pass "LOG_DIR 已配置"
+  fi
+
+  auto_ready=0
+  manual_ready=0
+
+  if is_placeholder "$poly_pk_val"; then
+    warn "自动版关键项 POLY_PRIVATE_KEY 未就绪"
+  else
+    auto_ready=1
+    pass "自动版关键项 POLY_PRIVATE_KEY 已就绪"
+  fi
+
+  if [[ -n "$up_token_val" && -n "$down_token_val" ]]; then
+    manual_ready=1
+    pass "手动版关键项 UP_TOKEN_ID / DOWN_TOKEN_ID 已就绪"
+  else
+    warn "手动版关键项 UP_TOKEN_ID / DOWN_TOKEN_ID 未就绪"
+  fi
+
+  if [[ $auto_ready -eq 0 && $manual_ready -eq 0 ]]; then
+    fail ".env 关键项不完整：至少需要完成一种模式（自动版或手动版）"
+  else
+    pass ".env 关键项完整（至少一种运行模式可用）"
+  fi
+fi
+
+echo
+
+echo "[2/5] 检查 LOG_DIR 可写"
+log_dir_effective="$(get_env_value "LOG_DIR")"
+if [[ -z "$log_dir_effective" ]]; then
+  log_dir_effective="$ROOT_DIR/logs"
+fi
+
+if [[ "$log_dir_effective" = /* ]]; then
+  resolved_log_dir="$log_dir_effective"
+else
+  resolved_log_dir="$ROOT_DIR/$log_dir_effective"
+fi
+
+if mkdir -p "$resolved_log_dir" 2>/dev/null; then
+  test_file="$resolved_log_dir/.ben_write_test_$$"
+  if ( : > "$test_file" ) 2>/dev/null; then
+    rm -f "$test_file"
+    pass "LOG_DIR 可写：$resolved_log_dir"
+  else
+    fail "LOG_DIR 不可写：$resolved_log_dir"
+  fi
+else
+  fail "LOG_DIR 无法创建：$resolved_log_dir"
+fi
+
+echo
+
+echo "[3/5] 显式提示 DRY_RUN 状态"
+dry_run_effective="$(get_env_value "DRY_RUN")"
+if [[ -z "$dry_run_effective" ]]; then
+  dry_run_effective="true"
+fi
+dry_run_lower="$(printf "%s" "$dry_run_effective" | tr '[:upper:]' '[:lower:]')"
+case "$dry_run_lower" in
+  false)
+    echo "🚨 DRY_RUN = false（实盘模式，谨慎操作）"
+    ;;
+  *)
+    echo "🛡️  DRY_RUN = ${dry_run_effective}（模拟模式）"
+    ;;
+esac
+pass "DRY_RUN 状态已显式输出"
+
+echo
+
+echo "[4/5] 语法检查"
+if python3 -m py_compile "$ROOT_DIR/auto_bot.py" >/dev/null 2>&1; then
+  pass "auto_bot.py 语法通过"
+else
+  fail "auto_bot.py 语法失败"
+fi
+
+if node --check "$ROOT_DIR/bot.js" >/dev/null 2>&1; then
+  pass "bot.js 语法通过"
+else
+  fail "bot.js 语法失败"
+fi
+
+echo
+
+echo "[5/5] 汇总"
+echo "PASS: $pass_count | WARN: $warn_count | FAIL: $fail_count"
+
+if [[ ${#warns[@]} -gt 0 ]]; then
+  printf "\n警告项：\n"
+  for w in "${warns[@]}"; do
+    echo "- $w"
+  done
+fi
+
+if [[ ${#fails[@]} -gt 0 ]]; then
+  printf "\n失败项：\n"
+  for f in "${fails[@]}"; do
+    echo "- $f"
+  done
+  printf "\n结果：❌ 自检失败\n"
+  exit 1
+fi
+
+printf "\n结果：✅ 自检通过\n"
+exit 0
