@@ -1,6 +1,6 @@
-# Polymarket BTC Hourly Bot (v1)
+# Polymarket BTC Hourly Bot
 
-按你的规则做的第一版（默认 **paper trade**）：
+按你的规则做的交易机器人（默认 **paper trade**）：
 
 - 本金：500 USDC（配置项）
 - 单笔最大仓位：50 USDC
@@ -12,24 +12,25 @@
 > 说明：Polymarket 实盘下单需要签名与钱包权限。这个 v1 先把策略与风控跑通，
 > 下单层通过 `EXECUTE_ORDER_CMD` 挂接（你可以接自己的签名器）。
 
-## 1) 准备
+## 1) 快速上手（自动识别 + 自动下单）
 
 ```bash
 cd polymarket-bot
-cp .env.example .env
+cp .env.auto.example .env
+python3 auto_bot.py
 ```
 
-填写 `.env`：
+必填项：
 
-- `UP_TOKEN_ID`：当小时 BTC Up token id
-- `DOWN_TOKEN_ID`：当小时 BTC Down token id
-- `MAX_ORDER_SIZE_USDC=50`
-- `TAKE_PROFIT_PCT=0.2`
-- `ENTRY_PRICE_THRESHOLD=0.30`
+- `POLY_PRIVATE_KEY`
+- （如你是代理签名模式）`POLY_FUNDER`
 
-## 2) 运行
+默认 `DRY_RUN=true`，只模拟不下单。确认日志正确后再改成 `false`。
+
+## 2) 如果你想先手动 token 版本
 
 ```bash
+cp .env.example .env
 node bot.js
 ```
 
@@ -67,7 +68,16 @@ bot 会通过 stdin 传 JSON：
 - 仅 00:00~00:19 / 01:00~01:19 ... 可开新仓
 - 已持仓时只做止盈检查，不重复加仓
 
-## 5) 你下一步要做
+## 5) 自动版说明（`auto_bot.py`）
 
-- 给我每小时市场 token id 的自动发现方式（或你固定交易的 market source）
-- 我就给你补上自动识别当前小时 market + 实盘签名下单层
+- 自动扫描并识别 BTC 小时盘（按正则过滤）
+- 自动映射 Up/Down outcome 到 token
+- 每小时前 20 分钟内按你的规则入场
+- 盈利 20%（按当前 bid）自动平仓
+- 支持实盘自动下单（`DRY_RUN=false`）
+
+## 6) 重要提醒
+
+- 真实资金风险很高，务必先跑 `DRY_RUN=true`
+- 交易所 API / 市场结构可能变化，建议每天先小额验证
+- 该策略不是投资建议，可能连续亏损
