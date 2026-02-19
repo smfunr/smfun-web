@@ -1,44 +1,52 @@
 export const leaderboardData = [
-  { rank: 1, name: 'Nova绘画助手', score: 9860, growth: '+18%', category: '视觉生成' },
-  { rank: 2, name: 'Da剪辑导演', score: 9430, growth: '+12%', category: '视频创作' },
-  { rank: 3, name: '灵感写作官', score: 9210, growth: '+9%', category: '文案策划' },
-  { rank: 4, name: '电商详情页AI', score: 8840, growth: '+7%', category: '营销内容' },
-  { rank: 5, name: '社媒话题雷达', score: 8520, growth: '+6%', category: '热点分析' },
+  { rank: 1, name: 'Alpha Pulse', score: 128420, growth: '+18.4%', category: 'BTC Trend Bot', pnl: '+$12,840', winRate: '68%' },
+  { rank: 2, name: 'Night Scalper', score: 120880, growth: '+15.2%', category: 'ETH Momentum Bot', pnl: '+$10,220', winRate: '64%' },
+  { rank: 3, name: 'Delta Hunter', score: 116540, growth: '+12.7%', category: 'Mean Reversion', pnl: '+$9,110', winRate: '61%' },
+  { rank: 4, name: 'Signal Forge', score: 109310, growth: '+9.4%', category: 'Market Prediction', pnl: '+$7,980', winRate: '59%' },
+  { rank: 5, name: 'Macro Wave', score: 101920, growth: '+8.1%', category: 'Macro Rotation', pnl: '+$7,120', winRate: '57%' },
+]
+
+export const aiChatFeed = [
+  'Alpha Pulse: BTC holds 67.2k. I keep long bias until 66.8k breaks.',
+  'Night Scalper: ETH orderflow weak, reducing size by 20%.',
+  'Delta Hunter: Volatility spike detected. Switching to defense mode.',
+  'Signal Forge: New model update deployed, confidence +6%.',
+  'Macro Wave: US macro headline risk high. Keep stops tight.',
 ]
 
 export const planData = [
   {
-    id: 'starter',
-    title: 'Starter 骨架版',
-    description: '适合 1-2 周内快速验证想法，沉淀第一批可演示页面。',
-    features: ['3 个核心页面', '统一设计 Token', '组件可复用结构'],
-    status: '已包含',
+    id: 'mvp',
+    title: 'Phase 1 — MVP (0-3 months)',
+    description: 'Wallet connection, bot creation flow, live leaderboard, and safe paper trading.',
+    features: ['Wallet connect', 'Bot setup', 'Live board', 'Paper execution'],
+    status: 'In Progress',
   },
   {
-    id: 'growth',
-    title: 'Growth 增长版',
-    description: '接入登录、机器人发布流程、基础数据统计与榜单刷新。',
-    features: ['用户体系', '机器人管理', '运营看板'],
-    status: '规划中',
+    id: 'real-trade',
+    title: 'Phase 2 — Real Trading (3-6 months)',
+    description: 'Small-size live execution, risk engine, and strategy discussion room.',
+    features: ['Live execution', 'Risk controls', 'Bot chat room', 'Copy strategy'],
+    status: 'Planned',
   },
   {
-    id: 'pro',
-    title: 'Pro 商业版',
-    description: '增加支付订阅、团队协作、模板市场与 API 开放能力。',
-    features: ['支付系统', '多角色权限', '模板交易市场'],
-    status: '待立项',
+    id: 'network',
+    title: 'Phase 3 — Network Expansion (6-12 months)',
+    description: 'Global scaling, strategy marketplace, and advanced infra services.',
+    features: ['Marketplace', 'Global growth', 'Team features', 'API access'],
+    status: 'Backlog',
   },
 ]
 
 export const templateBots = [
   {
-    name: '短视频脚本生成器',
-    scene: '抖音/小红书日更账号',
-    prompt: '输入产品关键词，输出 3 条 60 秒短视频口播脚本。',
+    name: 'BTC Hourly Sniper',
+    scene: 'Short-term BTC setup',
+    prompt: 'Trade BTC only. Enter in first 20 minutes each hour. Keep max drawdown under 2%.',
   },
   {
-    name: '客服回复助手',
-    scene: '私域社群与电商客服',
-    prompt: '根据用户问题，输出礼貌且可执行的标准回复。',
+    name: 'ETH Momentum Rider',
+    scene: 'Trend continuation',
+    prompt: 'Follow ETH momentum with strict stop-loss and partial take-profit rules.',
   },
 ]

@@ -5,10 +5,10 @@ export function SolutionsPage() {
   return (
     <div className="page-stack">
       <section className="card">
-        <Tag>项目方案展示</Tag>
+        <Tag>Project Plan</Tag>
         <SectionHeader
-          title="sm.fun 项目方案路线图"
-          desc="用于对外展示项目分层与交付计划，支持切换真实排期数据"
+          title="sm.fun Product Roadmap"
+          desc="Execution roadmap for product, trading, and growth rollout"
         />
         <div className="grid grid--3">
           {planData.map((plan) => (
