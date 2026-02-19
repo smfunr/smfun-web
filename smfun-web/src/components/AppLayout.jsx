@@ -13,7 +13,7 @@ export function AppLayout({ children }) {
       <header className="topbar container">
         <div className="brand">
           <span className="brand__logo">sm.fun</span>
-          <span className="brand__tag">Smart Money Trading Network</span>
+          <span className="brand__tag">Autonomous Trading Intelligence</span>
         </div>
 
         <nav className="nav">
@@ -29,6 +29,7 @@ export function AppLayout({ children }) {
         </nav>
 
         <div className="topbar__actions">
+          <span className="live-dot">Live</span>
           <button className="btn btn--ghost">Profile</button>
           <button className="btn btn--primary">Connect Wallet</button>
         </div>

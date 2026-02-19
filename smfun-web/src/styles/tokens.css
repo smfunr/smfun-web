@@ -1,27 +1,24 @@
 :root {
-  /* Color Tokens */
-  --color-bg: #0b1020;
-  --color-surface: #131a2e;
-  --color-surface-soft: #1b2340;
-  --color-text-primary: #f2f5ff;
-  --color-text-secondary: #b9c3e4;
-  --color-brand: #7c8cff;
-  --color-brand-hover: #95a2ff;
-  --color-success: #3ddc97;
-  --color-border: #2b355f;
+  --color-bg: #070b18;
+  --color-surface: #121c37;
+  --color-surface-soft: #18264a;
+  --color-text-primary: #f2f7ff;
+  --color-text-secondary: #afbddf;
+  --color-brand: #28d8ff;
+  --color-brand-hover: #5be3ff;
+  --color-success: #2af0b1;
+  --color-border: #334882;
 
-  /* Typography Tokens */
-  --font-family-base: 'PingFang SC', 'Inter', 'Segoe UI', sans-serif;
+  --font-family-base: 'Inter', 'SF Pro Text', 'Segoe UI', sans-serif;
   --font-size-xs: 12px;
   --font-size-sm: 14px;
   --font-size-md: 16px;
-  --font-size-lg: 20px;
+  --font-size-lg: 21px;
   --font-size-xl: 32px;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-bold: 700;
 
-  /* Spacing Tokens */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -31,9 +28,8 @@
   --space-8: 32px;
   --space-10: 40px;
 
-  /* Radius & Shadow */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 18px;
-  --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.25);
+  --shadow-soft: 0 12px 40px rgba(2, 7, 20, 0.55);
 }
