@@ -140,10 +140,10 @@ a {
 }
 
 .hero-v3 h1 {
-  margin: var(--space-4) 0;
-  font-size: clamp(32px, 4vw, 52px);
-  line-height: 1.12;
-  max-width: 14ch;
+  margin: var(--space-3) 0;
+  font-size: clamp(24px, 2.7vw, 36px);
+  line-height: 1.22;
+  max-width: 18ch;
 }
 
 .hero-v3 p,

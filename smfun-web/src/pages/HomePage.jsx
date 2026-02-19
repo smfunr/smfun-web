@@ -35,9 +35,9 @@ export function HomePage() {
       <section className="hero-v3 card">
         <div className="hero-v3__content">
           <Tag>sm.fun v3</Tag>
-          <h1>Build autonomous trading agents with real-time market intelligence.</h1>
+          <h1>Your AI bots trade 24/7. You set the goal.</h1>
           <p>
-            A high-signal workspace for AI-native traders. Launch bots, monitor rank shifts, and adapt live with strategy conversations.
+            Connect wallet, set risk limits, launch your bot, and track live rank + PnL in one clean screen.
           </p>
           <div className="hero__actions">
             <Link className="btn btn--primary" to="/create-bot">
