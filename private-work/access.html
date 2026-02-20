@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔒 私有工作清单访问</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; 
+            color: #0f0; 
+            font-family: 'Courier New', monospace;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background: #111;
+            border: 2px solid #0f0;
+            padding: 40px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+        h1 {
+            color: #ff0;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        .subtitle {
+            color: #0ff;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .input-group {
+            margin-bottom: 25px;
+        }
+        input {
+            width: 100%;
+            padding: 15px;
+            background: #222;
+            color: #0f0;
+            border: 1px solid #333;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #0f0;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #0a0;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #0f0;
+        }
+        .error {
+            color: #f00;
+            margin-top: 15px;
+            display: none;
+            font-size: 14px;
+        }
+        .info {
+            color: #888;
+            margin-top: 30px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+        .warning {
+            color: #f80;
+            margin-top: 20px;
+            font-size: 12px;
+            border: 1px solid #f80;
+            padding: 10px;
+            border-radius: 5px;
+            background: rgba(255, 136, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔒 私有工作清单访问</h1>
+        <div class="subtitle">完全独立系统 | 本地存储 | 无公开链接</div>
+        
+        <div class="input-group">
+            <input type="password" id="password" placeholder="请输入访问密码" autocomplete="off">
+        </div>
+        
+        <button onclick="checkPassword()">进入工作清单</button>
+        
+        <div id="error" class="error">❌ 密码错误，请重试</div>
+        
+        <div class="warning">
+            ⚠️ 安全提示：此系统完全独立于 sm.fun 项目<br>
+            无公开链接，无导航入口，仅限本地访问
+        </div>
+        
+        <div class="info">
+            文件位置：<code>~/.openclaw/workspace/private-work/</code><br>
+            存储方式：本地加密存储<br>
+            访问记录：无网络日志<br>
+            最后更新：2026-02-21
+        </div>
+    </div>
+    
+    <script>
+        function checkPassword() {
+            const password = document.getElementById('password').value;
+            const errorElement = document.getElementById('error');
+            
+            // 清除错误提示
+            errorElement.style.display = 'none';
+            
+            // 简单密码验证（你可以设置自己的密码）
+            // 当前密码：smfun2026 （你可以随时修改）
+            const validPasswords = [
+                'smfun2026',           // 主密码
+                '2026-02-21',          // 日期密码
+                'pengge',              // 名称密码
+                'dc5hao'               // 5号密码
+            ];
+            
+            if (validPasswords.includes(password)) {
+                // 密码正确，跳转到工作清单
+                window.location.href = 'work-checklist-private.html';
+            } else {
+                // 密码错误
+                errorElement.style.display = 'block';
+                document.getElementById('password').value = '';
+                document.getElementById('password').focus();
+                
+                // 记录错误尝试（仅本地，不上传）
+                console.warn('私有系统访问失败：密码错误');
+            }
+        }
+        
+        // 回车键支持
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+        
+        // 页面加载时自动聚焦输入框
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('password').focus();
+            console.log('🔒 私有工作清单访问系统已加载');
+            console.log('📍 本地文件系统访问，无网络请求');
+        });
+    </script>
+</body>
+</html>

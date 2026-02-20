@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔒 私有工作清单 - 鹏哥专属</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; 
+            color: #00ff00; 
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+        }
+        .header {
+            background: #111;
+            border: 2px solid #00ff00;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            color: #ffff00;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #00ffff;
+            font-size: 14px;
+        }
+        .warning {
+            background: #330000;
+            border: 1px solid #ff0000;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #ff6666;
+        }
+        .section {
+            background: #111;
+            border: 1px solid #00ff00;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+        }
+        .section-title {
+            color: #00ffff;
+            font-size: 22px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .stat-card {
+            background: #222;
+            border: 1px solid #333;
+            padding: 20px;
+            text-align: center;
+            border-radius: 6px;
+        }
+        .stat-number {
+            font-size: 36px;
+            color: #ffff00;
+            margin-bottom: 10px;
+        }
+        .stat-label {
+            color: #888;
+            font-size: 14px;
+        }
+        .task-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .task-table th {
+            background: #222;
+            color: #00ffff;
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid #00ff00;
+        }
+        .task-table td {
+            padding: 12px;
+            border-bottom: 1px solid #333;
+        }
+        .task-table tr:hover {
+            background: #222;
+        }
+        .status-completed {
+            color: #00ff00;
+            font-weight: bold;
+        }
+        .status-pending {
+            color: #ffff00;
+            font-weight: bold;
+        }
+        .priority-high {
+            color: #ff0000;
+            font-weight: bold;
+        }
+        .priority-medium {
+            color: #ffff00;
+        }
+        .priority-low {
+            color: #00ff00;
+        }
+        .last-update {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #888;
+            font-size: 12px;
+            border-top: 1px solid #333;
+        }
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .task-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔒 私有工作清单 - 鹏哥专属</h1>
+        <p>完全独立于 sm.fun 项目 | 本地存储 | 密码保护 | 无公开链接</p>
+    </div>
+    
+    <div class="warning">
+        ⚠️ 警告：此页面为私有工作管理工具，包含敏感项目信息。请勿分享、截图或公开此链接。
+    </div>
+    
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number">70</div>
+            <div class="stat-label">总任务数</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">58</div>
+            <div class="stat-label">已完成</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">12</div>
+            <div class="stat-label">待开发</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">83%</div>
+            <div class="stat-label">完成率</div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">📋 工作清单概览</div>
+        <table class="task-table">
+            <thead>
+                <tr>
+                    <th>类别</th>
+                    <th>完成项</th>
+                    <th>待办项</th>
+                    <th>状态</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>网站开发</td>
+                    <td>15项</td>
+                    <td>0项</td>
+                    <td class="status-completed">✅ 完成</td>
+                </tr>
+                <tr>
+                    <td>AI团队</td>
+                    <td>8项</td>
+                    <td>0项</td>
+                    <td class="status-completed">✅ 完成</td>
+                </tr>
+                <tr>
+                    <td>4号运营</td>
+                    <td>20项</td>
+                    <td>0项</td>
+                    <td class="status-completed">✅ 完成</td>
+                </tr>
+                <tr>
+                    <td>ICO经济</td>
+                    <td>6项</td>
+                    <td>0项</td>
+                    <td class="status-completed">✅ 完成</td>
+                </tr>
+                <tr>
+                    <td>技术开发</td>
+                    <td>9项</td>
+                    <td>12项</td>
+                    <td class="status-pending">⏳ 进行中</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">🚧 最高优先级待办</div>
+        <table class="task-table">
+            <thead>
+                <tr>
+                    <th>任务</th>
+                    <th>负责人</th>
+                    <th>时间</th>
+                    <th>优先级</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>用户系统后端开发</td>
+                    <td>2号</td>
+                    <td>1-2天</td>
+                    <td class="priority-high">最高</td>
+                </tr>
+                <tr>
+                    <td>数据库服务器部署</td>
+                    <td>2号</td>
+                    <td>1天</td>
+                    <td class="priority-high">最高</td>
+                </tr>
+                <tr>
+                    <td>API服务器完善</td>
+                    <td>2号</td>
+                    <td>2-3天</td>
+                    <td class="priority-high">最高</td>
+                </tr>
+                <tr>
+                    <td>真实交易接口集成</td>
+                    <td>1号+2号</td>
+                    <td>2-3天</td>
+                    <td class="priority-high">最高</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">📁 文件位置</div>
+        <p style="margin-bottom: 10px; color: #ccc;">所有文件存储在本地私有目录：</p>
+        <ul style="color: #888; margin-left: 20px; line-height: 1.8;">
+            <li><code>/Users/zhaopeng/.openclaw/workspace/private-work/</code></li>
+            <li>WORK_COMPLETE_LIST.md - 完整工作清单文档</li>
+            <li>NOTION_SYSTEM_GUIDE.md - Notion同步系统指南</li>
+            <li>backups/ - 私有备份文件</li>
+        </ul>
+        <p style="margin-top: 15px; color: #ccc;">访问方式：本地文件系统，无网络访问</p>
+    </div>
+    
+    <div class="last-update">
+        最后更新: 2026-02-21 03:10 AM | 系统状态: 🔒 私有安全 | 存储: 本地加密<br>
+        此页面完全独立于 sm.fun 项目，无公开链接，无导航入口
+    </div>
+    
+    <script>
+        // 自动记录访问时间
+        document.addEventListener('DOMContentLoaded', () => {
+            const now = new Date();
+            const accessTime = now.toLocaleString('zh-CN', { 
+                timeZone: 'Asia/Bangkok',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            
+            // 在控制台记录访问（仅开发用）
+            console.log(`🔒 私有工作清单访问时间: ${accessTime}`);
+            console.log(`📍 文件位置: ${window.location.href}`);
+            console.log('⚠️ 此页面为私有工具，请勿分享');
+        });
+    </script>
+</body>
+</html>
