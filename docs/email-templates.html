@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sm.fun - Email Marketing Templates</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; 
+            color: #00ff00; 
+            font-family: 'Courier New', monospace;
+            overflow-x: hidden;
+        }
+        .header {
+            background: #111;
+            border-bottom: 2px solid #00ff00;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffff00;
+        }
+        .nav {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-item {
+            color: #00ff00;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .nav-item:hover {
+            background: #333;
+            border-color: #00ff00;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+        .email-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px;
+            background: linear-gradient(135deg, #111, #222);
+            border: 2px solid #00ff00;
+            border-radius: 12px;
+        }
+        .email-header h1 {
+            font-size: 42px;
+            color: #ffff00;
+            margin-bottom: 20px;
+        }
+        .email-header p {
+            font-size: 18px;
+            color: #00ffff;
+        }
+        .template-section {
+            background: #111;
+            border: 1px solid #00ff00;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        .template-title {
+            color: #00ffff;
+            font-size: 32px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .template-preview {
+            background: #fff;
+            border: 2px solid #00ff00;
+            border-radius: 8px;
+            padding: 0;
+            margin: 30px 0;
+            overflow: hidden;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .email-content {
+            padding: 40px;
+            color: #333;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        .email-header-section {
+            background: linear-gradient(90deg, #00ff00, #00ffff);
+            padding: 30px;
+            text-align: center;
+            color: #000;
+        }
+        .email-logo {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .email-tagline {
+            font-size: 18px;
+            opacity: 0.8;
+        }
+        .email-body {
+            padding: 30px;
+        }
+        .email-cta {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .email-button {
+            display: inline-block;
+            background: linear-gradient(90deg, #00ff00, #00ffff);
+            color: #000;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .email-footer {
+            background: #f5f5f5;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            border-top: 1px solid #ddd;
+        }
+        .template-meta {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .meta-item {
+            background: #222;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .meta-label {
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        .meta-value {
+            color: #00ff00;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .copy-email-btn {
+            background: linear-gradient(90deg, #00ff00, #00ffff);
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 30px;
+            display: block;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .copy-email-btn:hover {
+            opacity: 0.9;
+        }
+        .html-code {
+            background: #000;
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+            font-family: 'Courier New', monospace;
+            color: #888;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        @media (max-width: 768px) {
+            .template-meta {
+                grid-template-columns: 1fr;
+            }
+            .template-preview {
+                transform: scale(0.9);
+                margin: 20px -20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">📧 sm.fun Email Templates</div>
+        <div class="nav">
+            <a href="index.html" class="nav-item">🏠 Home</a>
+            <a href="email-templates.html" class="nav-item" style="background: #333; border-color: #00ff00;">📧 Email</a>
+            <a href="social-media-content.html" class="nav-item">📝 Content</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="email-header">
+            <h1>📧 Email Marketing Templates</h1>
+            <p>Professional email templates for onboarding, promotions, and updates. Ready to use.</p>
+        </div>
+        
+        <!-- Template 1: Welcome Email -->
+        <div class="template-section">
+            <div class="template-title">👋 Welcome Email</div>
+            
+            <div class="template-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Purpose</div>
+                    <div class="meta-value">User Onboarding</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Trigger</div>
+                    <div class="meta-value">After Signup</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Open Rate</div>
+                    <div class="meta-value">45-60%</div>
+                </div>
+            </div>
+            
+            <div class="template-preview">
+                <div class="email-content">
+                    <div class="email-header-section">
+                        <div class="email-logo">🚀 sm.fun</div>
+                        <div class="email-tagline">Your AI bots trade 24/7. You set the goal.</div>
+                    </div>
+                    
+                    <div class="email-body">
+                        <h2 style="color: #333; margin-bottom: 20px;">Welcome to sm.fun! 🎉</h2>
+                        
+                        <p style="color: #555; margin-bottom: 20px;">
+                            Hi [User Name],
+                        </p>
+                        
+                        <p style="color: #555; margin-bottom: 20px;">
+                            Welcome to the future of AI-powered crypto trading! We're excited to have you join our community of platform owners.
+                        </p>
+                        
+                        <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 25px 0; border-left: 4px solid #00ff00;">
+                            <h3 style="color: #333; margin-bottom: 10px;">🚀 Your Quick Start Guide:</h3>
+                            <ol style="color: #555; padding-left: 20px;">
+                                <li style="margin-bottom: 10px;"><strong>Connect your wallet</strong> - Use MetaMask, Coinbase, or any supported wallet</li>
+                                <li style="margin-bottom: 10px;"><strong>Visit your Personal Center</strong> - Track your investments and earnings</li>
+                                <li style="margin-bottom: 10px;"><strong>Buy platform shares</strong> - 1 share = 0.1 ETH (35% fee sharing)</li>
+                                <li><strong>Invite friends</strong> - Earn 5% of their purchases</li>
+                            </ol>
+                        </div>
+                        
+                        <div class="email-cta">
+                            <a href="https://smfunr.github.io/smfun-web/profile.html" class="email-button">👉 Go to Your Personal Center</a>
+                        </div>
+                        
+                        <p style="color: #555; margin-bottom: 20px;">
+                            <strong>Need help?</strong> Check our <a href="https://smfunr.github.io/smfun-web/user-guide.html" style="color: #00aa00;">User Guide</a> or reply to this email.
+                        </p>
+                        
+                        <p style="color: #555; margin-bottom: 20px;">
+                            Welcome aboard!<br>
+                            The sm.fun Team 🤖
+                        </p>
+                    </div>
+                    
+                    <div class="email-footer">
+                        <p>© 2026 sm.fun. All rights reserved.</p>
+                        <p style="margin-top: 10px;">
+                            <a href="#" style="color: #666; text-decoration: none; margin: 0 10px;">Unsubscribe</a> | 
+                            <a href="#" style="color: #666; text-decoration: none; margin: 0 10px;">Privacy Policy</a> | 
+                            <a href="#" style="color: #666; text-decoration: none; margin: 0 10px;">Terms of Service</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="copy-email-btn" onclick="copyEmailTemplate(this, 'welcome')">📋 Copy Welcome Email Template</button>
+            
+            <div class="html-code" id="welcome-html" style="display: none;">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;style&gt;
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .header { background: linear-gradient(90deg, #00ff00, #00ffff); padding: 30px; text-align: center; color: #000; }
+        .logo { font-size: 32px; font-weight: bold; }
+        .tagline { font-size: 18px; opacity: 0.8; }
+        .content { padding: 30px; }
+        .cta-button { background: linear-gradient(90deg, #00ff00, #00ffff); color: #000; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; }
+        .footer { background: #f5f5f5; padding: 20px; text-align: center; color: #666; font-size: 12px; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="container"&gt;
+        &lt;div class="header"&gt;
+            &lt;div class="logo"&gt;🚀 sm.fun&lt;/div&gt;
+            &lt;div class="tagline"&gt;Your AI bots trade 24/7. You set the goal.&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="content"&gt;
+            &lt;h2&gt;Welcome to sm.fun! 🎉&lt;/h2&gt;
+            &lt;p&gt;Hi [User Name],&lt;/p&gt;
+            &lt;p&gt;Welcome to the future of AI-powered crypto trading!&lt;/p&gt;
+            &lt;div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 25px 0; border-left: 4px solid #00ff00;"&gt;
+                &lt;h3&gt;🚀 Your Quick Start Guide:&lt;/h3&gt;
+                &lt;ol&gt;
+                    &lt;li&gt;&lt;strong&gt;Connect your wallet&lt;/strong&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;strong&gt;Visit your Personal Center&lt;/strong&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;strong&gt;Buy platform shares&lt;/strong&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;strong&gt;Invite friends&lt;/strong&gt;&lt;/li&gt;
+                &lt;/ol&gt;
+            &lt;/div&gt;
+            &lt;div style="text-align: center; margin: 30px 0;"&gt;
+                &lt;a href="https://smfunr.github.io/smfun-web/profile.html" class="cta-button"&gt;👉 Go to Your Personal Center&lt;/a&gt;
+            &lt;/div&gt;
+            &lt;p&gt;Welcome aboard!&lt;br&gt;The sm.fun Team 🤖&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="footer"&gt;
+            &lt;p&gt;© 2026 sm.fun. All rights reserved.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+            </div>
+        </div>
+        
+        <!-- Template 2: Profit Update -->
+        <div class="template-section">
+            <div class="template-title">💰 Profit Update Email</div>
+            
+            <div class="template-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Purpose</div>
+                    <div class="meta-value">Monthly Update</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Trigger</div>
+                    <div class="meta-value">End of Month</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Open Rate</div>
+                    <div class="meta-value">50-65%</div>
+                </div>
+            </div>
+            
+            <div class="template-preview">
+                <div class="email-content">
+                    <div class="email-header-section">
+                        <div class="email-logo">💰 sm.fun Profit Update</div>
+                        <div class="email-tagline">Your earnings report for [Month Year]</div>
+                    </div>
+                    
+                    <div class="email-body">
+                        <h2 style="color: #333; margin-bottom: 20px;">Your sm.fun Earnings Report 💰</h2>
+                        
+                        <p style="color: #555; margin-bottom: 20px;">
+                            Hi [User Name],
+                        </p>
+                        
+                        <p style="color: #555; margin-bottom: 20px;">
+                            Here's your monthly earnings summary for <strong>[Month Year]</strong>. Your platform ownership continues to generate passive income!
+                        </p>
+                        
+                        <div style="background: #f0fff0; padding: 25px; border-radius: 8px; margin: 25px 0; border: 2px solid #00ff00;">
+                            <h3 style="color: #333; margin-bottom: 15px; text-align: center;">📊 Your Monthly Earnings</h3>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; text-align: center;">
+                                <div>
+                                    <div style="font-size: 24px; color: #00aa00; font-weight: bold;">0.42 ETH</div>
+                                    <div style="color: #666; font-size: 14px;">Platform Fee Sharing</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 24px; color: #00aa00; font-weight: bold;">0.15 ETH</div>
+                                    <div style="color: #666; font-size: 14px;">Referral Bonuses</div>
+                                </div>
+                            </div>
+                            <div style="text-align: center; margin-top: 20px;">
+                                <div style="font-size: 36px; color: #00aa00; font-weight: bold;">0.57 ETH</div>
+                                <div style="color: #666; font-size: 14px;">Total Earnings This Month</div>
+                            </div>
+                        </div>
+                        
+                        <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 25px 0;">
+                            <h3 style="color: #333; margin-bottom:                            10px;">📈 Platform Performance</h3>
+                            <ul style="color: #555; padding-left: 20px;">
+                                <li style="margin-bottom: 8px;">Total trading volume: <strong>158.5 ETH</strong> (+25.4 ETH)</li>
+                                <li style="margin-bottom: 8px;">Platform revenue: <strong>12.8 ETH</strong> (+2.1 ETH)</li>
+                                <li style="margin-bottom: 8px;">New users: <strong>42</strong> this month</li>
+                                <li>Your share of fees: <strong>35%</strong> (permanent)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="email-cta">
+                            <a href="https://smfunr.github.io/smfun-web/profile.html" class="email-button">💰 View Detailed Report</a>
+                        </div>
+                        
+                        <p style="color: #555; margin-bottom: 20px;">
+                            <strong>Pro Tip:</strong> Consider reinvesting your earnings to buy more shares and increase your ownership percentage!
+                        </p>
+                        
+                        <p style="color: #555; margin-bottom: 20px;">
+                            Keep growing your portfolio,<br>
+                            The sm.fun Team 🤖
+                        </p>
+                    </div>
+                    
+                    <div class="email-footer">
+                        <p>© 2026 sm.fun. All rights reserved.</p>
+                        <p style="margin-top: 10px;">
+                            <a href="#" style="color: #666; text-decoration: none; margin: 0 10px;">Unsubscribe</a> | 
+                            <a href="#" style="color: #666; text-decoration: none; margin: 0 10px;">Privacy Policy</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="copy-email-btn" onclick="copyEmailTemplate(this, 'profit')">📋 Copy Profit Update Template</button>
+        </div>
+        
+        <!-- Template 3: Promotional Email -->
+        <div class="template-section">
+            <div class="template-title">🎯 Promotional Email</div>
+            
+            <div class="template-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Purpose</div>
+                    <div class="meta-value">Special Promotion</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Trigger</div>
+                    <div class="meta-value">Campaign Launch</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Open Rate</div>
+                    <div class="meta-value">40-55%</div>
+                </div>
+            </div>
+            
+            <div class="template-preview">
+                <div class="email-content">
+                    <div class="email-header-section" style="background: linear-gradient(90deg, #ff00ff, #00ffff);">
+                        <div class="email-logo">🚀 LIMITED TIME OFFER</div>
+                        <div class="email-tagline">Special promotion for our community</div>
+                    </div>
+                    
+                    <div class="email-body">
+                        <h2 style="color: #333; margin-bottom: 20px; text-align: center;">Double Your Referral Bonus! 🎁</h2>
+                        
+                        <p style="color: #555; margin-bottom: 20px; text-align: center;">
+                            For the next 7 days only, we're DOUBLING referral bonuses from 5% to <strong>10%</strong>!
+                        </p>
+                        
+                        <div style="background: linear-gradient(135deg, #fff0f5, #f0f8ff); padding: 30px; border-radius: 12px; margin: 25px 0; text-align: center; border: 3px dashed #ff00ff;">
+                            <h3 style="color: #333; margin-bottom: 15px;">🎯 How It Works:</h3>
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 25px 0;">
+                                <div>
+                                    <div style="font-size: 48px; color: #ff00ff;">1</div>
+                                    <div style="color: #666; font-size: 14px;">Share your invite code</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 48px; color: #ff00ff;">2</div>
+                                    <div style="color: #666; font-size: 14px;">Friends buy shares</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 48px; color: #ff00ff;">3</div>
+                                    <div style="color: #666; font-size: 14px;">Earn <strong>10%</strong> (normally 5%)</div>
+                                </div>
+                            </div>
+                            <p style="color: #555; font-size: 18px;">
+                                <strong>Example:</strong> Friend buys 10 ETH worth of shares → You earn <strong>1 ETH</strong> bonus!
+                            </p>
+                        </div>
+                        
+                        <div style="background: #000; color: #fff; padding: 20px; border-radius: 8px; margin: 25px 0; text-align: center;">
+                            <h3 style="color: #ffff00; margin-bottom: 10px;">⏰ Limited Time Offer</h3>
+                            <div style="font-size: 24px; color: #ffff00; font-weight: bold;" id="countdown">7 days remaining</div>
+                            <div style="color: #ccc; font-size: 14px; margin-top: 10px;">Ends: [End Date]</div>
+                        </div>
+                        
+                        <div class="email-cta">
+                            <a href="https://smfunr.github.io/smfun-web/profile.html" class="email-button" style="background: linear-gradient(90deg, #ff00ff, #00ffff);">🎁 Get Your Invite Code Now</a>
+                        </div>
+                        
+                        <p style="color: #555; margin-bottom: 20px; text-align: center;">
+                            This is the perfect time to share sm.fun with your network and maximize your earnings!
+                        </p>
+                        
+                        <p style="color: #555; margin-bottom: 20px; text-align: center;">
+                            To your success,<br>
+                            The sm.fun Team 🚀
+                        </p>
+                    </div>
+                    
+                    <div class="email-footer">
+                        <p>© 2026 sm.fun. All rights reserved.</p>
+                        <p style="margin-top: 10px; font-size: 11px; color: #999;">
+                            *Double referral bonus applies to all purchases made by referred users during the promotion period.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="copy-email-btn" onclick="copyEmailTemplate(this, 'promo')">📋 Copy Promotional Template</button>
+        </div>
+    </div>
+    
+    <script>
+        function copyEmailTemplate(button, templateId) {
+            let htmlContent = '';
+            
+            if (templateId === 'welcome') {
+                htmlContent = document.getElementById('welcome-html').textContent;
+            } else {
+                // 对于其他模板，复制预览内容
+                const templateSection = button.parentElement;
+                const preview = templateSection.querySelector('.template-preview .email-content');
+                htmlContent = preview.outerHTML;
+            }
+            
+            // 复制到剪贴板
+            navigator.clipboard.writeText(htmlContent)
+                .then(() => {
+                    const originalText = button.textContent;
+                    button.textContent = '✅ Template Copied!';
+                    button.style.background = '#003300';
+                    button.style.color = '#00ff00';
+                    
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.style.background = '';
+                        button.style.color = '';
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error('Failed to copy template:', err);
+                    alert('Failed to copy template');
+                });
+        }
+        
+        // 更新倒计时
+        function updateCountdown() {
+            const endDate = new Date();
+            endDate.setDate(endDate.getDate() + 7);
+            
+            const countdownElement = document.getElementById('countdown');
+            if (countdownElement) {
+                const now = new Date();
+                const diff = endDate - now;
+                
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                
+                countdownElement.textContent = `${days} days, ${hours} hours remaining`;
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCountdown();
+            setInterval(updateCountdown, 3600000); // 每小时更新一次
+        });
+    </script>
+</body>
+</html>
