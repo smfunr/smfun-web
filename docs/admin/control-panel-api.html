@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sm.fun - Admin Control Panel</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; 
+            color: #00ff00; 
+            font-family: 'Courier New', monospace;
+            overflow-x: hidden;
+        }
+        .header {
+            background: #111;
+            border-bottom: 2px solid #ff0000;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff0000;
+        }
+        .nav {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-item {
+            color: #00ff00;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .nav-item:hover {
+            background: #333;
+            border-color: #00ff00;
+        }
+        .nav-item.active {
+            background: #222;
+            border-color: #ff0000;
+            color: #ff0000;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .dashboard-card {
+            background: #222;
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+        }
+        .dashboard-card.admin {
+            border-color: #ff0000;
+            background: linear-gradient(135deg, #222, #330000);
+        }
+        .card-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: #ffff00;
+            margin: 10px 0;
+        }
+        .card-label {
+            color: #888;
+            font-size: 14px;
+        }
+        .section {
+            background: #111;
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        .section.admin {
+            border-color: #ff0000;
+        }
+        .section-title {
+            color: #00ffff;
+            font-size: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title.admin {
+            color: #ff0000;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .data-table th {
+            background: #222;
+            color: #00ffff;
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid #00ff00;
+        }
+        .data-table.admin th {
+            color: #ff0000;
+            border-bottom-color: #ff0000;
+        }
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid #333;
+        }
+        .data-table tr:hover {
+            background: #222;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            background: #222;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .btn:hover {
+            background: #333;
+        }
+        .btn.admin {
+            border-color: #ff0000;
+            color: #ff0000;
+        }
+        .btn.primary {
+            background: linear-gradient(90deg, #00ff00, #00ffff);
+            color: #000;
+        }
+        .btn.danger {
+            background: #330000;
+            border-color: #ff0000;
+            color: #ff0000;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #ffff00;
+        }
+        .error {
+            background: #330000;
+            border: 1px solid #ff0000;
+            color: #ff0000;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .wallet-info {
+            background: #222;
+            border: 1px solid #ff0000;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .wallet-address {
+            font-family: monospace;
+            color: #ffff00;
+            margin-bottom: 10px;
+        }
+        .wallet-balance {
+            color: #00ff00;
+            font-size: 18px;
+        }
+        .admin-only {
+            border-left: 4px solid #ff0000;
+            padding-left: 15px;
+            margin: 20px 0;
+        }
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">⚙️ sm.fun Admin Control Panel</div>
+        <div class="nav">
+            <a href="index.html" class="nav-item">🏠 Home</a>
+            <a href="control-panel.html" class="nav-item active">⚙️ Admin</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- 加载状态 -->
+        <div id="loading" class="loading">
+            <div style="font-size: 24px; margin-bottom: 20px;">🔄 Loading admin dashboard...</div>
+            <div>Connecting to sm.fun API...</div>
+        </div>
+        
+        <!-- 错误状态 -->
+        <div id="error" class="error" style="display: none;">
+            <div style="font-size: 18px; margin-bottom: 10px;">❌ Admin Access Required</div>
+            <div id="error-message"></div>
+            <button class="btn" onclick="location.reload()" style="margin-top: 15px;">Retry</button>
+        </div>
+        
+        <!-- 钱包连接 -->
+        <div id="connect-wallet" style="text-align: center; padding: 40px;">
+            <div style="color: #ffff00; font-size: 24px; margin-bottom: 20px;">🔐 Admin Wallet Required</div>
+            <div style="color: #00ff00; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                This is the admin control panel. Only authorized admin wallets can access this area.
+            </div>
+            <button class="btn primary" onclick="connectWallet()" style="padding: 15px 30px; font-size: 16px;">Connect Admin Wallet</button>
+        </div>
+        
+        <!-- 管理员内容（动态加载） -->
+        <div id="admin-content" style="display: none;">
+            <!-- 钱包信息 -->
+            <div class="wallet-info">
+                <div class="wallet-address" id="admin-wallet">0x0000...0000</div>
+                <div class="wallet-balance">Balance: <span id="admin-balance">0</span> ETH</div>
+                <div style="color: #ff0000; font-size: 12px; margin-top: 10px;">⚠️ Admin privileges active</div>
+            </div>
+            
+            <!-- 仪表板统计 -->
+            <div class="dashboard-grid">
+                <div class="dashboard-card admin">
+                    <div class="card-label">Total Users</div>
+                    <div class="card-value" id="total-users">0</div>
+                    <div style="color: #888; font-size: 12px;">Active today: <span id="active-today">0</span></div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-label">Total ICO ETH</div>
+                    <div class="card-value" id="total-ico-eth">0</div>
+                    <div style="color: #888; font-size: 12px;">Progress: <span id="ico-progress">0%</span></div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-label">Trading Volume</div>
+                    <div class="card-value" id="trading-volume">$0</div>
+                    <div style="color: #888; font-size: 12px;">Total fees: <span id="total-fees">$0</span></div>
+                </div>
+                <div class="dashboard-card admin">
+                    <div class="card-label">Platform Revenue</div>
+                    <div class="card-value" id="platform-revenue">0 ETH</div>
+                    <div style="color: #888; font-size: 12px;">Last 30 days</div>
+                </div>
+            </div>
+            
+            <!-- 最近活动 -->
+            <div class="section admin">
+                <div class="section-title admin">📊 Recent Activity</div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                    <div>
+                        <div style="color: #00ffff; margin-bottom: 10px;">👥 New Users</div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Wallet</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="new-users-body">
+                                <!-- 新用户数据 -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <div style="color: #00ffff; margin-bottom: 10px;">🚀 Recent ICO</div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Wallet</th>
+                                    <th>Parts</th>
+                                    <th>ETH</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-ico-body">
+                                <!-- 最近ICO数据 -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <div style="color: #00ffff; margin-bottom: 10px;">🤖 Recent Trades</div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Bot</th>
+                                    <th>Pair</th>
+                                    <th>ROI</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-trades-body">
+                                <!-- 最近交易数据 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 用户管理 -->
+            <div class="section">
+                <div class="section-title">👥 User Management</div>
+                <div class="action-buttons" style="margin-bottom: 20px;">
+                    <button class="btn primary" onclick="exportUsers()">Export Users CSV</button>
+                    <button class="btn" onclick="refreshUsers()">Refresh</button>
+                    <input type="text" id="user-search" class="btn" placeholder="Search wallet/username..." style="background: #000; color: #00ff00; flex-grow: 1;">
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Wallet</th>
+                            <th>Username</th>
+                            <th>Level</th>
+                            <th>Parts</th>
+                            <th>Investment</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-body">
+                        <!-- 用户数据 -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- ICO管理 -->
+            <div class="section">
+                <div class="section-title">🚀 ICO Management</div>
+                <div class="action-buttons" style="margin-bottom: 20px;">
+                    <button class="btn primary" onclick="addICOShares()">Add Parts Manually</button>
+                    <button class="btn" onclick="exportICOData()">Export ICO Data</button>
+                    <button class="btn danger" onclick="resetICO()">Reset ICO (Danger)</button>
+                </div>
+                <div style="background: #222; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <div style="color: #00ffff; margin-bottom: 10px;">ICO Settings</div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                        <div>
+                            <div style="color: #888; font-size: 12px;">Price per part</div>
+                            <div style="color: #ffff00; font-size: 18px;">0.1 ETH</div>
+                        </div>
+                        <div>
+                            <div style="color: #888; font-size: 12px;">Total parts</div>
+                            <div style="color: #ffff00; font-size: 18px;">10,000</div>
+                        </div>
+                        <div>
+                            <div style="color: #888; font-size: 12px;">Fee sharing</div>
+                            <div style="color: #ffff00; font-size: 18px;">35%</div>
+                        </div>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Wallet</th>
+                            <th>Parts</th>
+                            <th>ETH</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ico-transactions-body">
+                        <!-- ICO交易数据 -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- 系统配置 -->
+            <div class="section admin">
+                <div class="section-title admin">⚙️ System Configuration</div>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+                    <div>
+                        <div style="color: #ff0000; margin-bottom: 15px;">🛡️ Security Settings</div>
+                        <div style="background: #222; padding: 15px; border-radius: 6px; margin-bottom: 10px;">
+                            <div style="color: #00ff00;">Admin Wallet Whitelist</div>
+                            <div style="color: #888; font-size: 12px; margin-top: 5px;" id="admin-whitelist">0x742d35Cc6634C0532925a3b844Bc9e90F1b6c168</div>
+                        </div>
+                        <button class="btn admin" onclick="addAdminWallet()">Add Admin Wallet</button>
+                        <button class="btn danger" onclick="removeAdminWallet()">Remove Current</button>
+                    </div>
+                    <div>
+                        <div style="color: #ff0000; margin-bottom: 15px;">💰 Fee Settings</div>
+                        <div style="background: #222; padding: 15px; border-radius: 6px; margin-bottom: 10px;">
+                            <div style="color: #00ff00;">Trading Fee</div>
+                            <div style="color: #888; font-size: 12px; margin-top: 5px;">0.1% per trade</div>
+                        </div>
+                        <div style="background: #222; padding: 15px; border-radius: 6px; margin-bottom: 10px;">
+                            <div style="color: #00ff00;">Withdrawal Fee</div>
+                            <div style="color: #888; font-size: 12px; margin-top: 5px;">1% (min 0.001 ETH)</div>
+                        </div>
+                        <button class="btn admin" onclick="updateFees()">Update Fees</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../api-client.js"></script>
+    <script>
+        // 管理员钱包白名单
+        const ADMIN_WALLETS = [
+            '0x742d35Cc6634C0532925a3b844Bc9e90F1b6c168'.toLowerCase()
+        ];
+        
+        let adminWallet = '';
+        let adminData = {};
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', async () => {
+            await checkAdminAccess();
+        });
+        
+        // 检查管理员访问权限
+        async function checkAdminAccess() {
+            const savedAccount = localStorage.getItem('smfun_wallet_account');
+            if (!savedAccount) {
+                // 没有连接钱包
+                return;
+            }
+            
+            // 检查是否是管理员钱包
+            if (ADMIN_WALLETS.includes(savedAccount.toLowerCase())) {
+                adminWallet = savedAccount;
+                await loadAdminDashboard();
+            } else {
+                showError('                showError('Access denied. This wallet is not authorized for admin access.');
+            }
+        }
+        
+        // 加载管理员仪表板
+        async function loadAdminDashboard() {
+            try {
+                // 显示加载状态
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('error').style.display = 'none';
+                document.getElementById('connect-wallet').style.display = 'none';
+                document.getElementById('admin-content').style.display = 'none';
+                
+                // 从API加载管理员数据
+                const api = window.smFunAPI;
+                const result = await api.getAdminDashboard();
+                
+                if (result.success) {
+                    adminData = result.dashboard;
+                    
+                    // 更新UI
+                    updateAdminUI();
+                    
+                    // 显示管理员内容
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('admin-content').style.display = 'block';
+                    
+                    // 获取钱包余额
+                    await getAdminWalletBalance();
+                    
+                } else {
+                    showError('Failed to load admin dashboard');
+                }
+                
+            } catch (error) {
+                console.error('Error loading admin dashboard:', error);
+                showError('Failed to load admin dashboard: ' + error.message);
+            }
+        }
+        
+        // 更新管理员UI
+        function updateAdminUI() {
+            // 钱包信息
+            const shortAddress = `${adminWallet.substring(0, 6)}...${adminWallet.substring(38)}`;
+            document.getElementById('admin-wallet').textContent = shortAddress;
+            document.getElementById('admin-wallet').title = adminWallet;
+            
+            // 仪表板统计
+            document.getElementById('total-users').textContent = adminData.total_users || 0;
+            document.getElementById('active-today').textContent = adminData.active_today || 0;
+            document.getElementById('total-ico-eth').textContent = (adminData.total_ico_eth || 0).toFixed(2);
+            document.getElementById('ico-progress').textContent = ((adminData.total_ico_eth || 0) / 1000 * 100).toFixed(1) + '%';
+            document.getElementById('trading-volume').textContent = '$' + (adminData.total_trading_volume || 0).toLocaleString();
+            document.getElementById('total-fees').textContent = '$' + (adminData.total_fees || 0).toLocaleString();
+            document.getElementById('platform-revenue').textContent = (adminData.total_fees ? adminData.total_fees * 0.35 : 0).toFixed(2) + ' ETH';
+            
+            // 更新最近活动表格
+            updateRecentActivity();
+            
+            // 更新用户表格（模拟数据）
+            updateUsersTable();
+            
+            // 更新ICO交易表格（模拟数据）
+            updateICOTransactionsTable();
+        }
+        
+        // 获取管理员钱包余额
+        async function getAdminWalletBalance() {
+            if (typeof window.ethereum === 'undefined') {
+                document.getElementById('admin-balance').textContent = '0';
+                return;
+            }
+            
+            try {
+                const balance = await window.ethereum.request({
+                    method: 'eth_getBalance',
+                    params: [adminWallet, 'latest']
+                });
+                
+                const ethBalance = parseInt(balance) / 1e18;
+                document.getElementById('admin-balance').textContent = ethBalance.toFixed(4);
+            } catch (error) {
+                console.error('Error getting admin wallet balance:', error);
+                document.getElementById('admin-balance').textContent = '0';
+            }
+        }
+        
+        // 更新最近活动
+        function updateRecentActivity() {
+            // 新用户
+            const newUsersBody = document.getElementById('new-users-body');
+            newUsersBody.innerHTML = '';
+            
+            const sampleUsers = [
+                { wallet: '0x8f3a4c2d1e5b6a7c9d0f1e2a3b4c5d6e7f8a9b0', date: '2026-02-20' },
+                { wallet: '0x9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0', date: '2026-02-20' },
+                { wallet: '0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0', date: '2026-02-19' }
+            ];
+            
+            sampleUsers.forEach(user => {
+                const shortAddress = `${user.wallet.substring(0, 6)}...${user.wallet.substring(38)}`;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td title="${user.wallet}">${shortAddress}</td>
+                    <td>${user.date}</td>
+                `;
+                newUsersBody.appendChild(row);
+            });
+            
+            // 最近ICO
+            const recentICOBody = document.getElementById('recent-ico-body');
+            recentICOBody.innerHTML = '';
+            
+            const sampleICO = [
+                { wallet: '0x8f3a4c2d1e5b6a7c9d0f1e2a3b4c5d6e7f8a9b0', parts: 85, eth: 8.5 },
+                { wallet: '0x9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0', parts: 50, eth: 5.0 },
+                { wallet: '0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0', parts: 25, eth: 2.5 }
+            ];
+            
+            sampleICO.forEach(purchase => {
+                const shortAddress = `${purchase.wallet.substring(0, 6)}...${purchase.wallet.substring(38)}`;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td title="${purchase.wallet}">${shortAddress}</td>
+                    <td style="color: #ffff00;">${purchase.parts}</td>
+                    <td style="color: #00ff00;">${purchase.eth} ETH</td>
+                `;
+                recentICOBody.appendChild(row);
+            });
+            
+            // 最近交易
+            const recentTradesBody = document.getElementById('recent-trades-body');
+            recentTradesBody.innerHTML = '';
+            
+            const sampleTrades = [
+                { bot: 'AlphaBot_001', pair: 'ETH/USDT', roi: '+8.5%' },
+                { bot: 'BetaBot_002', pair: 'BTC/USDT', roi: '+12.3%' },
+                { bot: 'GammaBot_003', pair: 'SOL/USDT', roi: '+5.2%' }
+            ];
+            
+            sampleTrades.forEach(trade => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${trade.bot}</td>
+                    <td>${trade.pair}</td>
+                    <td style="color: #00ff00;">${trade.roi}</td>
+                `;
+                recentTradesBody.appendChild(row);
+            });
+        }
+        
+        // 更新用户表格
+        function updateUsersTable() {
+            const usersBody = document.getElementById('users-body');
+            usersBody.innerHTML = '';
+            
+            const sampleUsers = [
+                { id: 1, wallet: '0x742d35Cc6634C0532925a3b844Bc9e90F1b6c168', username: 'Admin', level: 'king', parts: 1000, investment: 100 },
+                { id: 2, wallet: '0x8f3a4c2d1e5b6a7c9d0f1e2a3b4c5d6e7f8a9b0', username: 'TestUser_123', level: 'gold', parts: 85, investment: 8.5 },
+                { id: 3, wallet: '0x9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0', username: 'CryptoTrader', level: 'silver', parts: 35, investment: 3.5 },
+                { id: 4, wallet: '0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0', username: 'NewUser_456', level: 'bronze', parts: 5, investment: 0.5 }
+            ];
+            
+            sampleUsers.forEach(user => {
+                const shortAddress = `${user.wallet.substring(0, 6)}...${user.wallet.substring(38)}`;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.id}</td>
+                    <td title="${user.wallet}">${shortAddress}</td>
+                    <td>${user.username}</td>
+                    <td><span style="color: ${getLevelColor(user.level)};">${user.level}</span></td>
+                    <td style="color: #ffff00;">${user.parts}</td>
+                    <td style="color: #00ff00;">${user.investment} ETH</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn" onclick="editUser(${user.id})">Edit</button>
+                            <button class="btn danger" onclick="deleteUser(${user.id})">Delete</button>
+                        </div>
+                    </td>
+                `;
+                usersBody.appendChild(row);
+            });
+        }
+        
+        // 更新ICO交易表格
+        function updateICOTransactionsTable() {
+            const icoBody = document.getElementById('ico-transactions-body');
+            icoBody.innerHTML = '';
+            
+            const sampleTransactions = [
+                { id: 1, wallet: '0x742d35Cc6634C0532925a3b844Bc9e90F1b6c168', parts: 500, eth: 50, date: '2026-02-20', status: 'confirmed' },
+                { id: 2, wallet: '0x742d35Cc6634C0532925a3b844Bc9e90F1b6c168', parts: 500, eth: 50, date: '2026-02-20', status: 'confirmed' },
+                { id: 3, wallet: '0x8f3a4c2d1e5b6a7c9d0f1e2a3b4c5d6e7f8a9b0', parts: 85, eth: 8.5, date: '2026-02-19', status: 'confirmed' },
+                { id: 4, wallet: '0x9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0', parts: 50, eth: 5.0, date: '2026-02-19', status: 'pending' }
+            ];
+            
+            sampleTransactions.forEach(tx => {
+                const shortAddress = `${tx.wallet.substring(0, 6)}...${tx.wallet.substring(38)}`;
+                const statusColor = tx.status === 'confirmed' ? '#00ff00' : '#ffff00';
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${tx.id}</td>
+                    <td title="${tx.wallet}">${shortAddress}</td>
+                    <td style="color: #ffff00;">${tx.parts}</td>
+                    <td style="color: #00ff00;">${tx.eth} ETH</td>
+                    <td>${tx.date}</td>
+                    <td><span style="color: ${statusColor};">${tx.status}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn" onclick="viewTransaction(${tx.id})">View</button>
+                            ${tx.status === 'pending' ? '<button class="btn primary" onclick="confirmTransaction(' + tx.id + ')">Confirm</button>' : ''}
+                        </div>
+                    </td>
+                `;
+                icoBody.appendChild(row);
+            });
+        }
+        
+        // 获取等级颜色
+        function getLevelColor(level) {
+            const colors = {
+                'bronze': '#CD7F32',
+                'silver': '#C0C0C0',
+                'gold': '#FFD700',
+                'platinum': '#E5E4E2',
+                'king': '#FF0000'
+            };
+            return colors[level] || '#00ff00';
+        }
+        
+        // 连接钱包
+        async function connectWallet() {
+            try {
+                if (typeof window.ethereum === 'undefined') {
+                    alert('Please install MetaMask or another Ethereum wallet');
+                    return;
+                }
+                
+                // 请求账户访问
+                const accounts = await window.ethereum.request({
+                    method: 'eth_requestAccounts'
+                });
+                
+                if (accounts.length > 0) {
+                    const wallet = accounts[0];
+                    localStorage.setItem('smfun_wallet_account', wallet);
+                    
+                    // 检查是否是管理员
+                    if (ADMIN_WALLETS.includes(wallet.toLowerCase())) {
+                        adminWallet = wallet;
+                        await loadAdminDashboard();
+                    } else {
+                        showError('Access denied. This wallet is not authorized for admin access.');
+                    }
+                }
+            } catch (error) {
+                console.error('Error connecting wallet:', error);
+                alert('Failed to connect wallet: ' + error.message);
+            }
+        }
+        
+        // 显示错误
+        function showError(message) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('connect-wallet').style.display = 'none';
+            document.getElementById('error').style.display = 'block';
+            document.getElementById('error-message').textContent = message;
+        }
+        
+        // 功能函数
+        function exportUsers() {
+            alert('Exporting users to CSV...');
+            // 这里应该是导出用户的API调用
+        }
+        
+        function refreshUsers() {
+            location.reload();
+        }
+        
+        function editUser(userId) {
+            alert(`Edit user ${userId}`);
+        }
+        
+        function deleteUser(userId) {
+            if (confirm(`Are you sure you want to delete user ${userId}? This action cannot be undone.`)) {
+                alert(`User ${userId} deleted (simulated)`);
+            }
+        }
+        
+        function addICOShares() {
+            alert('Add ICO shares manually');
+        }
+        
+        function exportICOData() {
+            alert('Exporting ICO data to CSV...');
+        }
+        
+        function resetICO() {
+            if (confirm('⚠️ DANGER: This will reset all ICO data. Are you absolutely sure?')) {
+                if (confirm('⚠️ This action cannot be undone. Type "RESET" to confirm:')) {
+                    alert('ICO reset (simulated)');
+                }
+            }
+        }
+        
+        function viewTransaction(txId) {
+            alert(`View transaction ${txId}`);
+        }
+        
+        function confirmTransaction(txId) {
+            if (confirm(`Confirm transaction ${txId}?`)) {
+                alert(`Transaction ${txId} confirmed (simulated)`);
+                location.reload();
+            }
+        }
+        
+        function addAdminWallet() {
+            const wallet = prompt('Enter new admin wallet address:');
+            if (wallet && /^0x[a-fA-F0-9]{40}$/.test(wallet)) {
+                alert(`Added admin wallet: ${wallet} (simulated)`);
+            } else {
+                alert('Invalid wallet address');
+            }
+        }
+        
+        function removeAdminWallet() {
+            if (confirm('Remove current wallet from admin list?')) {
+                alert('Admin wallet removed (simulated)');
+                localStorage.removeItem('smfun_wallet_account');
+                location.reload();
+            }
+        }
+        
+        function updateFees() {
+            alert('Update fee settings');
+        }
+    </script>
+</body>
+</html>

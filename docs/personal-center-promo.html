@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sm.fun Personal Center - Your AI Trading Hub</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; 
+            color: #00ff00; 
+            font-family: 'Courier New', monospace;
+            overflow-x: hidden;
+        }
+        .header {
+            background: #111;
+            border-bottom: 2px solid #00ff00;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffff00;
+        }
+        .nav {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-item {
+            color: #00ff00;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .nav-item:hover {
+            background: #333;
+            border-color: #00ff00;
+        }
+        .hero {
+            text-align: center;
+            padding: 80px 40px;
+            background: linear-gradient(135deg, #111, #222);
+            border-bottom: 2px solid #00ff00;
+        }
+        .hero h1 {
+            font-size: 48px;
+            color: #ffff00;
+            margin-bottom: 20px;
+        }
+        .hero p {
+            font-size: 20px;
+            color: #00ffff;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+        .cta-button {
+            background: linear-gradient(90deg, #00ff00, #00ffff);
+            color: #000;
+            padding: 18px 36px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .features {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 40px;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .feature-card {
+            background: #222;
+            border: 1px solid #00ff00;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+        }
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        .feature-title {
+            color: #00ffff;
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        .feature-desc {
+            color: #888;
+            line-height: 1.6;
+        }
+        .how-it-works {
+            background: #111;
+            padding: 60px 40px;
+            border-top: 2px solid #00ff00;
+            border-bottom: 2px solid #00ff00;
+        }
+        .steps {
+            max-width: 800px;
+            margin: 40px auto;
+        }
+        .step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #222;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+        .step-number {
+            background: #00ff00;
+            color: #000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        .step-content h3 {
+            color: #ffff00;
+            margin-bottom: 10px;
+        }
+        .benefits {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 40px;
+        }
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .benefit-card {
+            background: #222;
+            border: 1px solid #00ff00;
+            border-radius: 12px;
+            padding: 30px;
+        }
+        .benefit-card h3 {
+            color: #00ffff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .benefit-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .benefit-list li {
+            padding: 8px 0;
+            color: #888;
+            border-bottom: 1px solid #333;
+        }
+        .benefit-list li:last-child {
+            border-bottom: none;
+        }
+        .testimonials {
+            background: #111;
+            padding: 60px 40px;
+            border-top: 2px solid #00ff00;
+        }
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .testimonial-card {
+            background: #222;
+            border: 1px solid #00ff00;
+            border-radius: 12px;
+            padding: 30px;
+        }
+        .testimonial-text {
+            color: #888;
+            font-style: italic;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .testimonial-author {
+            color: #00ff00;
+            font-weight: bold;
+        }
+        .footer {
+            background: #111;
+            padding: 40px;
+            text-align: center;
+            border-top: 2px solid #00ff00;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+        .footer-link {
+            color: #00ff00;
+            text-decoration: none;
+        }
+        @media (max-width: 1024px) {
+            .features-grid, .benefits-grid, .testimonial-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            .features-grid, .benefits-grid, .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 {
+                font-size: 36px;
+            }
+            .hero p {
+                font-size: 16px;
+            }
+            .step {
+                flex-direction: column;
+                text-align: center;
+            }
+            .step-number {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">sm.fun Personal Center</div>
+        <div class="nav">
+            <a href="index.html" class="nav-item">🏠 Home</a>
+            <a href="ico.html" class="nav-item">🚀 ICO</a>
+            <a href="profile.html" class="nav-item">👤 Profile</a>
+            <a href="personal-center-promo.html" class="nav-item" style="background: #333; border-color: #00ff00;">📢 Promo</a>
+        </div>
+    </div>
+    
+    <div class="hero">
+        <h1>🚀 Your AI Trading Hub is Here!</h1>
+        <p>Connect your wallet and unlock the full power of sm.fun's Personal Center. Track your investments, earn rewards, and join the future of AI-powered trading.</p>
+        <a href="profile.html" class="cta-button">👉 Connect Wallet & Get Started</a>
+    </div>
+    
+    <div class="features">
+        <h2 style="text-align: center; color: #ffff00; font-size: 36px; margin-bottom: 20px;">✨ Key Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <div class="feature-title">Real-time Portfolio Tracking</div>
+                <div class="feature-desc">Monitor your ICO shares, trading profits, and referral earnings in one dashboard.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <div class="feature-title">35% Platform Fee Sharing</div>
+                <div class="feature-desc">Earn a permanent share of all platform fees based on your holdings.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <div class="feature-title">Invite & Earn System</div>
+                <div class="feature-desc">Share your invite code and earn 5% of your friends' purchases.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="how-it-works">
+        <h2 style="text-align: center; color: #ffff00; font-size: 36px; margin-bottom: 20px;">🎯 How It Works</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Connect Your Wallet</h3>
+                    <p style="color: #888;">Link your MetaMask, Coinbase, or other Ethereum wallet with one click.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Buy ICO Shares</h3>
+                    <p style="color: #888;">Purchase parts (1 part = 0.1 ETH) to become a platform owner.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Track & Earn</h3>
+                    <p style="color: #888;">Monitor your profits, level up your membership, and invite friends to earn more.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="benefits">
+        <h2 style="text-align: center; color: #ffff00; font-size: 36px; margin-bottom: 20px;">🎁 Membership Benefits</h2>
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <h3>🎫 Tiered Membership</h3>
+                <ul class="benefit-list">
+                    <li>✅ Bronze (1-9 shares): Basic access</li>
+                    <li>✅ Silver (10-49): Enhanced rewards</li>
+                    <li>✅ Gold (50-199): Priority support</li>
+                    <li>✅ Platinum (200-499): VIP features</li>
+                    <li>✅ King (500+): Founder status</li>
+                </ul>
+            </div>
+            <div class="benefit-card">
+                <h3>📈 Profit Opportunities</h3>
+                <ul class="benefit-list">
+                    <li>✅ 35% platform fee distribution</li>
+                    <li>✅ Trading profit sharing</li>
+                    <li>✅ Referral bonuses (5%)</li>
+                    <li>✅ Monthly profit distributions</li>
+                    <li>✅ Early access to new features</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="testimonials">
+        <h2 style="text-align: center; color: #ffff00; font-size: 36px; margin-bottom: 20px;">💬 What Users Say</h2>
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-text">"Finally a platform that treats investors as owners. The 35% fee sharing is revolutionary!"</div>
+                <div class="testimonial-author">- CryptoTrader42 (Gold Member)</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-text">"The invite system helped me earn 2.5 ETH just by sharing with friends. Amazing passive income!"</div>
+                <div class="testimonial-author">- DeFiQueen (Platinum Member)</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-text">"Best UI I've seen in crypto. Clean, fast, and actually works. No more confusing dashboards."</div>
+                <div class="testimonial-author">- TechGeek101 (Silver Member)</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div class="logo" style="margin-bottom: 20px;">sm.fun - AI Bots Trade 24/7</div>
+        <div class="footer-links">
+            <a href="index.html" class="footer-link">Home</a>
+            <a href="ico.html" class="footer-link">ICO</a>
+            <a href="profile.html" class="footer-link">Profile</a>
+            <a href="auto-trading.html" class="footer-link">Auto Trading</a>
+        </div>
+        <div style="color: #888; margin-top: 20px; font-size: 14px;">
+            © 2026 sm.fun. All rights reserved. Your AI bots trade 24/7. You set the goal.
+        </div>
+    </div>
+</body>
+</html>

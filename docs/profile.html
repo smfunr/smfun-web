@@ -222,6 +222,19 @@
         .badge.gold { background: #FFD700; color: #000; }
         .badge.platinum { background: #E5E4E2; color: #000; }
         .badge.king { background: #FF0000; color: #fff; }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #ffff00;
+        }
+        .error {
+            background: #330000;
+            border: 1px solid #ff0000;
+            color: #ff0000;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
         @media (max-width: 1024px) {
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -256,136 +269,153 @@
     </div>
     
     <div class="container">
-        <!-- 用户头部信息 -->
-        <div class="user-header">
-            <div class="user-info">
-                <div class="user-avatar">👤</div>
-                <div class="user-details">
-                    <h2 id="username">Loading...</h2>
-                    <div class="user-wallet" id="wallet-address">0x0000...0000</div>
-                    <span class="user-level" id="membership-level">Bronze</span>
-                </div>
-            </div>
-            <div class="action-buttons">
-                <button class="btn primary large" onclick="buyMoreShares()">Buy More Shares</button>
-                <button class="btn large" onclick="withdrawProfits()">Withdraw Profits</button>
-            </div>
+        <!-- 加载状态 -->
+        <div id="loading" class="loading">
+            <div style="font-size: 24px; margin-bottom: 20px;">🔄 Loading your data...</div>
+            <div>Connecting to sm.fun API...</div>
         </div>
         
-        <!-- 统计卡片 -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-label">Total Shares</div>
-                <div class="stat-value" id="total-shares">0</div>
-                <div style="color: #888; font-size: 12px;">Investment: <span id="total-investment">0 ETH</span></div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Total Profits</div>
-                <div class="stat-value" id="total-profits">0 ETH</div>
-                <div style="color: #00ff00; font-size: 12px;">This month: <span id="monthly-profit">0 ETH</span></div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Profit Share</div>
-                <div class="stat-value" id="profit-share">0%</div>
-                <div style="color: #888; font-size: 12px;">Voting power: <span id="voting-power">0 votes</span></div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Invite Rewards</div>
-                <div class="stat-value" id="invite-count">0</div>
-                <div style="color: #888; font-size: 12px;">Earned: <span id="invite-earnings">0 ETH</span></div>
-            </div>
+        <!-- 错误状态 -->
+        <div id="error" class="error" style="display: none;">
+            <div style="font-size: 18px; margin-bottom: 10px;">❌ Error Loading Data</div>
+            <div id="error-message"></div>
+            <button class="btn" onclick="location.reload()" style="margin-top: 15px;">Retry</button>
         </div>
         
-        <!-- 我的份额 -->
-        <div class="section">
-            <div class="section-title">📊 My Shares</div>
-            <div class="shares-grid">
-                <div class="share-card">
-                    <div class="share-title">ICO Shares</div>
-                    <div class="share-value" id="ico-shares">0</div>
-                    <div style="color: #888; font-size: 14px;">Value: <span id="ico-value">0 ETH</span></div>
-                    <div style="color: #00ff00; font-size: 12px; margin-top: 10px;">+35% platform fee sharing</div>
-                </div>
-                <div class="share-card">
-                    <div class="share-title">Trading Shares</div>
-                    <div class="share-value" id="trading-shares">0</div>
-                    <div style="color: #888; font-size: 14px;">Value: <span id="trading-value">0 ETH</span></div>
-                    <div style="color: #00ff00; font-size: 12px; margin-top: 10px;">Auto-trading profits</div>
-                </div>
-                <div class="share-card">
-                    <div class="share-title">Referral Shares</div>
-                    <div class="share-value" id="referral-shares">0</div>
-                    <div style="color: #888; font-size: 14px;">Value: <span id="referral-value">0 ETH</span></div>
-                    <div style="color: #00ff00; font-size: 12px; margin-top: 10px;">From invited users</div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- 收益记录 -->
-        <div class="section">
-            <div class="section-title">💰 Profit History</div>
-            <table class="profit-table" id="profit-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Amount</th>
-                        <th>Source</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="profit-table-body">
-                    <!-- 收益记录将通过JS动态生成 -->
-                </tbody>
-            </table>
-            <div style="text-align: center; margin-top: 20px;">
-                <button class="btn" onclick="loadMoreProfits()">Load More</button>
-                <button class="btn" onclick="exportProfits()">Export CSV</button>
-            </div>
-        </div>
-        
-        <!-- 会员等级 -->
-        <div class="section">
-            <div class="section-title">🎫 Membership Level</div>
-            <div class="membership-badges">
-                <div class="badge bronze">Bronze (1-9 shares)</div>
-                <div class="badge silver">Silver (10-49)</div>
-                <div class="badge gold">Gold (50-199)</div>
-                <div class="badge platinum">Platinum (200-499)</div>
-                <div class="badge king">King (500+)</div>
-            </div>
-            <div style="margin-top: 20px;">
-                <div style="color: #888; margin-bottom: 10px;">Your progress to next level:</div>
-                <div style="background: #222; height: 20px; border-radius: 10px; overflow: hidden;">
-                    <div id="level-progress" style="height: 100%; background: linear-gradient(90deg, #00ff00, #00ffff); width: 15%;"></div>
-                </div>
-                <div style="display: flex; justify-content: space-between; margin-top: 5px; color: #888; font-size: 12px;">
-                    <span>Current: <span id="current-level">Bronze</span></span>
-                    <span>Next: <span id="next-level">Silver</span> (<span id="needed-shares">10</span> shares)</span>
-                </div>
-            </div>
-        </div>
-        
-        <!-- 邀请系统 -->
-        <div class="section">
-            <div class="section-title">👥 Invite Friends</div>
-            <div style="background: #222; border: 1px solid #00ff00; border-radius: 8px; padding: 20px;">
-                <div style="color: #00ffff; font-weight: bold; margin-bottom: 10px;">Your Invite Code:</div>
-                <div style="background: #000; padding: 15px; border-radius: 4px; font-family: monospace; font-size: 18px; color: #ffff00; margin-bottom: 20px; text-align: center;" id="invite-code">SMF-XXXXXX</div>
-                <div style="color: #888; margin-bottom: 15px;">
-                    Share this code with friends. When they sign up and buy shares, you earn 5% of their purchases!
+        <!-- 用户内容（动态加载） -->
+        <div id="user-content" style="display: none;">
+            <!-- 用户头部信息 -->
+            <div class="user-header">
+                <div class="user-info">
+                    <div class="user-avatar">👤</div>
+                    <div class="user-details">
+                        <h2 id="username">Loading...</h2>
+                        <div class="user-wallet" id="wallet-address">0x0000...0000</div>
+                        <span class="user-level" id="membership-level">Bronze</span>
+                    </div>
                 </div>
                 <div class="action-buttons">
-                    <button class="btn" onclick="copyInviteCode()">Copy Code</button>
-                    <button class="btn" onclick="shareInviteLink()">Share Link</button>
-                    <button class="btn" onclick="viewInviteTree()">View Invite Tree</button>
+                    <button class="btn primary large" onclick="buyMoreShares()">Buy More Shares</button>
+                    <button class="btn large" onclick="withdrawProfits()">Withdraw Profits</button>
+                </div>
+            </div>
+            
+            <!-- 统计卡片 -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Shares</div>
+                    <div class="stat-value" id="total-shares">0</div>
+                    <div style="color: #888; font-size: 12px;">Investment: <span id="total-investment">0 ETH</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Profits</div>
+                    <div class="stat-value" id="total-profits">0 ETH</div>
+                    <div style="color: #00ff00; font-size: 12px;">This month: <span id="monthly-profit">0 ETH</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Profit Share</div>
+                    <div class="stat-value" id="profit-share">0%</div>
+                    <div style="color: #888; font-size: 12px;">Voting power: <span id="voting-power">0 votes</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Invite Rewards</div>
+                    <div class="stat-value" id="invite-count">0</div>
+                    <div style="color: #888; font-size: 12px;">Earned: <span id="invite-earnings">0 ETH</span></div>
+                </div>
+            </div>
+            
+            <!-- 我的份额 -->
+            <div class="section">
+                <div class="section-title">📊 My Shares</div>
+                <div class="shares-grid">
+                    <div class="share-card">
+                        <div class="share-title">ICO Shares</div>
+                        <div class="share-value" id="ico-shares">0</div>
+                        <div style="color: #888; font-size: 14px;">Value: <span id="ico-value">0 ETH</span></div>
+                        <div style="color: #00ff00; font-size: 12px; margin-top: 10px;">+35% platform fee sharing</div>
+                    </div>
+                    <div class="share-card">
+                        <div class="share-title">Trading Shares</div>
+                        <div class="share-value" id="trading-shares">0</div>
+                        <div style="color: #888; font-size: 14px;">Value: <span id="trading-value">0 ETH</span></div>
+                        <div style="color: #00ff00; font-size: 12px; margin-top: 10px;">Auto-trading profits</div>
+                    </div>
+                    <div class="share-card">
+                        <div class="share-title">Referral Shares</div>
+                        <div class="share-value" id="referral-shares">0</div>
+                        <div style="color: #888; font-size: 14px;">Value: <span id="referral-value">0 ETH</span></div>
+                        <div style="color: #00ff00; font-size: 12px; margin-top: 10px;">From invited users</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 收益记录 -->
+            <div class="section">
+                <div class="section-title">💰 Profit History</div>
+                <table class="profit-table" id="profit-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Source</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="profit-table-body">
+                        <!-- 收益记录将通过JS动态生成 -->
+                    </tbody>
+                </table>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn" onclick="loadMoreProfits()">Load More</button>
+                    <button class="btn" onclick="exportProfits()">Export CSV</button>
+                </div>
+            </div>
+            
+            <!-- 会员等级 -->
+            <div class="section">
+                <div class="section-title">🎫 Membership Level</div>
+                <div class="membership-badges">
+                    <div class="badge bronze">Bronze (1-9 shares)</div>
+                    <div class="badge silver">Silver (10-49)</div>
+                    <div class="badge gold">Gold (50-199)</div>
+                    <div class="badge platinum">Platinum (200-499)</div>
+                    <div class="badge king">King (500+)</div>
+                </div>
+                <div style="margin-top: 20px;">
+                    <div style="color: #888; margin-bottom: 10px;">Your progress to next level:</div>
+                    <div style="background: #222; height: 20px; border-radius: 10px; overflow: hidden;">
+                        <div id="level-progress" style="height: 100%; background: linear-gradient(90deg, #00ff00, #00ffff); width: 15%;"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 5px; color: #888; font-size: 12px;">
+                        <span>Current: <span id="current-level">Bronze</span></span>
+                        <span>Next: <span id="next-level">Silver</span> (<span id="needed-shares">10</span> shares)</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 邀请系统 -->
+            <div class="section">
+                <div class="section-title">👥 Invite Friends</div>
+                <div style="background: #222; border: 1px solid #00ff00; border-radius: 8px; padding: 20px;">
+                    <div style="color: #00ffff; font-weight: bold; margin-bottom: 10px;">Your Invite Code:</div>
+                    <div style="background: #000; padding: 15px; border-radius: 4px; font-family: monospace; font-size: 18px; color: #ffff00; margin-bottom: 20px; text-align: center;" id="invite-code">SMF-XXXXXX</div>
+                    <div style="color: #888; margin-bottom: 15px;">
+                        Share this code with friends. When they sign up and buy shares, you earn 5% of their purchases!
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn" onclick="copyInviteCode()">Copy Code</button>
+                        <button class="btn" onclick="shareInviteLink()">Share Link</button>
+                        <button class="btn" onclick="viewInviteTree()">View Invite Tree</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     
+    <script src="api-client.js"></script>
     <script>
         // 用户数据
-        const userData = {
+        let userData = {
             walletAddress: '',
             username: 'User',
             membershipLevel: 'bronze',
@@ -406,46 +436,103 @@
         // 初始化
         document.addEventListener('DOMContentLoaded', async () => {
             await loadUserData();
-            updateUI();
-            generateProfitHistory();
         });
         
         // 加载用户数据
         async function loadUserData() {
-            // 从localStorage获取钱包地址
-            const savedAccount = localStorage.getItem('smfun_wallet_account');
-            if (!savedAccount) {
-                // 如果没有连接钱包，重定向到首页
-                window.location.href = 'index.html';
-                return;
+            try {
+                // 从localStorage获取钱包地址
+                const savedAccount = localStorage.getItem('smfun_wallet_account');
+                if (!savedAccount) {
+                    // 如果没有                    // 如果没有连接钱包，重定向到首页
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                userData.walletAddress = savedAccount;
+                
+                // 显示加载状态
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('error').style.display = 'none';
+                document.getElementById('user-content').style.display = 'none';
+                
+                // 从API加载用户数据
+                const api = window.smFunAPI;
+                const result = await api.getUser(savedAccount);
+                
+                if (result.success) {
+                    // 更新用户数据
+                    const user = result.user;
+                    const shares = result.shares || [];
+                    const profits = result.profits || [];
+                    
+                    userData.username = user.username || `User_${savedAccount.substring(2, 6)}`;
+                    userData.membershipLevel = user.membership_level;
+                    userData.totalShares = user.total_shares;
+                    userData.totalInvestment = user.total_investment;
+                    userData.totalProfits = user.total_profits;
+                    userData.inviteCount = user.invite_count;
+                    userData.inviteEarnings = user.invite_earnings;
+                    userData.inviteCode = user.invite_code || `SMF-${savedAccount.substring(2, 8).toUpperCase()}`;
+                    
+                    // 计算ICO份额
+                    userData.shares.ico = shares.reduce((sum, share) => sum + share.shares_count, 0);
+                    
+                    // 计算月度收益（最近30天）
+                    const thirtyDaysAgo = new Date();
+                    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+                    userData.monthlyProfit = profits
+                        .filter(p => new Date(p.distribution_date) >= thirtyDaysAgo)
+                        .reduce((sum, p) => sum + parseFloat(p.amount), 0);
+                    
+                    userData.profits = profits;
+                    
+                    // 计算会员等级
+                    calculateMembershipLevel();
+                    
+                    // 更新UI
+                    updateUI();
+                    
+                    // 显示用户内容
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('user-content').style.display = 'block';
+                    
+                } else {
+                    // 用户不存在，创建新用户
+                    await createNewUser(savedAccount);
+                }
+                
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                showError('Failed to load user data: ' + error.message);
             }
-            
-            userData.walletAddress = savedAccount;
-            
-            // 模拟从API加载用户数据
-            // 这里应该是真实的API调用
-            // const response = await fetch(`/api/user/${savedAccount}`);
-            // const data = await response.json();
-            
-            // 模拟数据
-            userData.username = `User_${savedAccount.substring(2, 6)}`;
-            userData.totalShares = 25;
-            userData.totalInvestment = 2.5;
-            userData            userData.totalProfits = 0.642;
-            userData.monthlyProfit = 0.128;
-            userData.inviteCount = 3;
-            userData.inviteEarnings = 0.15;
-            userData.shares = {
-                ico: 20,
-                trading: 3,
-                referral: 2
-            };
-            
-            // 计算会员等级
-            calculateMembershipLevel();
-            
-            // 生成邀请码
-            userData.inviteCode = `SMF-${savedAccount.substring(2, 8).toUpperCase()}`;
+        }
+        
+        // 创建新用户
+        async function createNewUser(walletAddress) {
+            try {
+                const api = window.smFunAPI;
+                
+                // 模拟购买0份额来创建用户
+                const result = await api.buyICOShares(walletAddress, 0);
+                
+                if (result.success) {
+                    // 重新加载用户数据
+                    await loadUserData();
+                } else {
+                    showError('Failed to create user account');
+                }
+            } catch (error) {
+                console.error('Error creating user:', error);
+                showError('Failed to create user account: ' + error.message);
+            }
+        }
+        
+        // 显示错误
+        function showError(message) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error').style.display = 'block';
+            document.getElementById('error-message').textContent = message;
         }
         
         // 计算会员等级
@@ -521,6 +608,9 @@
             
             // 邀请码
             document.getElementById('invite-code').textContent = userData.inviteCode;
+            
+            // 生成收益历史
+            generateProfitHistory();
         }
         
         // 生成收益历史
@@ -528,29 +618,47 @@
             const tableBody = document.getElementById('profit-table-body');
             tableBody.innerHTML = '';
             
-            const sampleProfits = [
-                { date: '2026-02-20', amount: 0.042, source: 'ICO Distribution', status: 'Completed' },
-                { date: '2026-02-15', amount: 0.038, source: 'Trading Fee', status: 'Completed' },
-                { date: '2026-02-10', amount: 0.051, source: 'Platform Revenue', status: 'Completed' },
-                { date: '2026-02-05', amount: 0.028, source: 'Referral Bonus', status: 'Completed' },
-                { date: '2026-01-31', amount: 0.089, source: 'Monthly Distribution', status: 'Completed' },
-                { date: '2026-01-25', amount: 0.035, source: 'Trading Fee', status: 'Completed' },
-                { date: '2026-01-20', amount: 0.042, source: 'ICO Distribution', status: 'Completed' },
-                { date: '2026-01-15', amount: 0.031, source: 'Platform Revenue', status: 'Completed' }
-            ];
-            
-            sampleProfits.forEach(profit => {
+            if (userData.profits.length === 0) {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${profit.date}</td>
+                    <td colspan="4" style="text-align: center; color: #888; padding: 20px;">
+                        No profit records yet
+                    </td>
+                `;
+                tableBody.appendChild(row);
+                return;
+            }
+            
+            // 按日期排序（最新的在前）
+            const sortedProfits = [...userData.profits].sort((a, b) => 
+                new Date(b.distribution_date) - new Date(a.distribution_date)
+            );
+            
+            sortedProfits.forEach(profit => {
+                const date = new Date(profit.distribution_date);
+                const formattedDate = date.toISOString().split('T')[0];
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${formattedDate}</td>
                     <td class="profit-amount">${profit.amount} ETH</td>
-                    <td>${profit.source}</td>
-                    <td><span style="color: #00ff00;">${profit.status}</span></td>
+                    <td>${formatSource(profit.source)}</td>
+                    <td><span style="color: ${profit.status === 'completed' ? '#00ff00' : '#ffff00'};">${profit.status}</span></td>
                 `;
                 tableBody.appendChild(row);
             });
-            
-            userData.profits = sampleProfits;
+        }
+        
+        // 格式化收益来源
+        function formatSource(source) {
+            const sources = {
+                'ico_distribution': 'ICO Distribution',
+                'trading_fee': 'Trading Fee',
+                'platform_revenue': 'Platform Revenue',
+                'referral_bonus': 'Referral Bonus',
+                'monthly_distribution': 'Monthly Distribution'
+            };
+            return sources[source] || source;
         }
         
         // 功能函数
@@ -558,7 +666,7 @@
             window.location.href = 'ico.html';
         }
         
-        function withdrawProfits() {
+        async function withdrawProfits() {
             if (userData.totalProfits <= 0) {
                 alert('No profits available for withdrawal');
                 return;
@@ -601,10 +709,17 @@
         }
         
         function exportProfits() {
+            if (userData.profits.length === 0) {
+                alert('No profit records to export');
+                return;
+            }
+            
             // 创建CSV数据
             let csv = 'Date,Amount (ETH),Source,Status\n';
             userData.profits.forEach(profit => {
-                csv += `${profit.date},${profit.amount},${profit.source},${profit.status}\n`;
+                const date = new Date(profit.distribution_date);
+                const formattedDate = date.toISOString().split('T')[0];
+                csv += `${formattedDate},${profit.amount},${formatSource(profit.source)},${profit.status}\n`;
             });
             
             // 创建下载链接

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sm.fun - User Guide & Getting Started</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; 
+            color: #00ff00; 
+            font-family: 'Courier New', monospace;
+            overflow-x: hidden;
+        }
+        .header {
+            background: #111;
+            border-bottom: 2px solid #00ff00;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffff00;
+        }
+        .nav {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-item {
+            color: #00ff00;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .nav-item:hover {
+            background: #333;
+            border-color: #00ff00;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+        .guide-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px;
+            background: linear-gradient(135deg, #111, #222);
+            border: 2px solid #00ff00;
+            border-radius: 12px;
+        }
+        .guide-header h1 {
+            font-size: 42px;
+            color: #ffff00;
+            margin-bottom: 20px;
+        }
+        .guide-header p {
+            font-size: 18px;
+            color: #00ffff;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .section {
+            background: #111;
+            border: 1px solid #00ff00;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        .section-title {
+            color: #00ffff;
+            font-size: 28px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: #222;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+        .step-number {
+            background: #00ff00;
+            color: #000;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+            margin-right: 30px;
+            flex-shrink: 0;
+        }
+        .step-content h3 {
+            color: #ffff00;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        .step-content p {
+            color: #888;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .tip-box {
+            background: #003300;
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .tip-title {
+            color: #00ff00;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .faq-item {
+            background: #222;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 25px;
+        }
+        .faq-question {
+            color: #00ffff;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .faq-answer {
+            color: #888;
+            line-height: 1.6;
+        }
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+        }
+        .quick-link {
+            background: #222;
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            text-decoration: none;
+            color: #00ff00;
+            transition: all 0.3s;
+        }
+        .quick-link:hover {
+            background: #333;
+            transform: translateY(-5px);
+        }
+        .quick-link-icon {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+        .quick-link-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffff00;
+        }
+        .contact-section {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #111, #222);
+            border: 2px solid #00ff00;
+            border-radius: 12px;
+            margin-top: 60px;
+        }
+        .contact-title {
+            color: #ffff00;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        .contact-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .contact-btn {
+            background: #222;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .contact-btn:hover {
+            background: #333;
+        }
+        @media (max-width: 1024px) {
+            .faq-grid, .quick-links {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            .faq-grid, .quick-links {
+                grid-template-columns: 1fr;
+            }
+            .step {
+                flex-direction: column;
+                text-align: center;
+            }
+            .step-number {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            .guide-header h1 {
+                font-size: 32px;
+            }
+            .contact-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">sm.fun User Guide</div>
+        <div class="nav">
+            <a href="index.html" class="nav-item">🏠 Home</a>
+            <a href="ico.html" class="nav-item">🚀 ICO</a>
+            <a href="profile.html" class="nav-item">👤 Profile</a>
+            <a href="user-guide.html" class="nav-item" style="background: #333; border-color: #00ff00;">📚 Guide</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="guide-header">
+            <h1>🚀 Getting Started with sm.fun</h1>
+            <p>Your complete guide to becoming a platform owner and maximizing your earnings with AI-powered trading.</p>
+        </div>
+        
+        <!-- 快速开始 -->
+        <div class="section">
+            <div class="section-title">⚡ Quick Start Guide</div>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Connect Your Wallet</h3>
+                    <p>Visit the homepage and click "Connect Wallet". We support MetaMask, Coinbase Wallet, WalletConnect, Phantom, and Trust Wallet.</p>
+                    <div class="tip-box">
+                        <div class="tip-title">💡 Tip: First-time users</div>
+                        <p>If you don't have a wallet yet, download MetaMask (browser extension) or Trust Wallet (mobile app). They're free and easy to set up.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Explore Your Personal Center</h3>
+                    <p>After connecting, you'll be automatically redirected to your Personal Center. Here you can see your wallet address, membership level, and available features.</p>
+                    <div class="tip-box">
+                        <div class="tip-title">🎯 Pro Tip: Bookmark your profile</div>
+                        <p>Save your profile page URL for quick access. Your data is securely stored and accessible anytime.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Buy ICO Shares</h3>
+                    <p>Navigate to the ICO page and purchase shares (1 share = 0.1 ETH). Each share gives you ownership rights and profit sharing.</p>
+                    <div class="tip-box">
+                        <div class="tip-title">💰 Smart Investment: Start small</div>
+                        <p>Begin with 10 shares (1 ETH) to reach Silver membership. You can always buy more later as you see the platform grow.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>Invite Friends & Earn</h3>
+                    <p>Share your unique invite code from your Personal Center. Earn 5% of every purchase made by friends you invite.</p>
+                    <div class="tip-box">
+                        <div class="tip-title">👥 Growth Strategy: Build your network</div>
+                        <p>Share on social media, crypto forums, and with your trading community. The more you share, the more you earn!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 常见问题 -->
+        <div class="section">
+            <div class="section-title">❓ Frequently Asked Questions</div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <div class="faq-question">What is 1 "part" or "share"?</div>
+                    <div class="faq-answer">1 part = 0.1 ETH. It represents ownership in the sm.fun platform. Owners receive 35% of all platform fees.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">How do I earn profits?</div>
+                    <div class="faq-answer">Profits come from: 1) 35% platform fee sharing, 2) Trading profits, 3) Referral bonuses, 4) Monthly distributions.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">When can I withdraw profits?</div>
+                    <div class="faq-answer">Profits are distributed monthly. You can withdraw anytime from your Personal Center. Minimum withdrawal: 0.01 ETH.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Is there a minimum investment?</div>
+                    <div class="faq-answer">Minimum: 1 share (0.1 ETH). No maximum limit. We recommend starting with 10 shares (1 ETH) for Silver membership benefits.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">What wallets are supported?</div>
+                    <div class="faq-answer">MetaMask, Coinbase Wallet, WalletConnect, Phantom, Trust Wallet, and any EIP-1193 compatible wallet.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">How secure is my investment?</div>
+                    <div class="faq-answer">We use industry-standard security: wallet authentication, encrypted data, regular audits, and transparent blockchain records.</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 快速链接 -->
+        <div class="section">
+            <div class="section-title">🔗 Quick Links</div>
+            <div class="quick-links">
+                <a href="profile.html" class="quick-link">
+                    <div class="quick-link-icon">👤</div>
+                    <div class="quick-link-title">Personal Center</div>
+                    <div style="color: #888; font-size: 14px; margin-top: 10px;">Your dashboard</div>
+                </a>
+                <a href="ico.html" class="quick-link">
+                    <div class="quick-link-icon">🚀</div>
+                    <div class="quick-link-title">ICO Page</div>
+                    <div style="color: #888; font-size: 14px; margin-top: 10px;">Buy shares</div>
+                </a>
+                <a href="auto-trading.html" class="quick-link">
+                    <div class="quick-link-icon">🤖</div>
+                    <div class="quick-link-title">Auto Trading</div>
+                    <div style="color: #888; font-size: 14px; margin-top: 10px">AI bots</div>
+                </a>
+                <a href="personal-center-promo.html" class="quick-link">
+                    <div class="quick-link-icon">📢</div>
+                    <div class="quick-link-title">Features</div>
+                    <div style="color: #888; font-size: 14px; margin-top: 10px">See all features</div>
+                </a>
+            </div>
+        </div>
+        
+        <!-- 联系支持 -->
+        <div class="contact-section">
+            <div class="contact-title">💬 Need Help?</div>
+            <p style="color: #00ffff; max-width: 800px; margin: 0 auto 30px;">
+                Our team is here to help you get started and maximize your earnings. Contact us for any questions or support.
+            </p>
+            <div class="contact-buttons">
+                <a href="mailto:smfunr@gmail.com" class="contact-btn">📧 Email Support</a>
+                <a href="#" class="contact-btn" onclick="alert('Telegram: @smfun_support (coming soon)')">💬 Telegram</a>
+                <a href="#" class="contact-btn" onclick="alert('Twitter: @smfun_ai (coming soon)')">🐦 Twitter</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

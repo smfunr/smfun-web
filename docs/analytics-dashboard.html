@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sm.fun - Analytics Dashboard</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; 
+            color: #00ff00; 
+            font-family: 'Courier New', monospace;
+            overflow-x: hidden;
+        }
+        .header {
+            background: #111;
+            border-bottom: 2px solid #00ff00;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffff00;
+        }
+        .nav {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-item {
+            color: #00ff00;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .nav-item:hover {
+            background: #333;
+            border-color: #00ff00;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px;
+            background: linear-gradient(135deg, #111, #222);
+            border: 2px solid #00ff00;
+            border-radius: 12px;
+        }
+        .dashboard-header h1 {
+            font-size: 42px;
+            color: #ffff00;
+            margin-bottom: 10px;
+        }
+        .dashboard-header p {
+            font-size: 18px;
+            color: #00ffff;
+        }
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        .stat-card {
+            background: #222;
+            border: 1px solid #00ff00;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 48px;
+            color: #ffff00;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .stat-label {
+            color: #888;
+            font-size: 14px;
+        }
+        .stat-change {
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .positive { color: #00ff00; }
+        .negative { color: #ff0000; }
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        .chart-container {
+            background: #111;
+            border: 1px solid #00ff00;
+            border-radius: 12px;
+            padding: 30px;
+        }
+        .chart-title {
+            color: #00ffff;
+            font-size: 24px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .chart-placeholder {
+            height: 300px;
+            background: #222;
+            border: 1px solid #333;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-size: 18px;
+        }
+        .user-analytics {
+            background: #111;
+            border: 1px solid #00ff00;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 60px;
+        }
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+        .user-table th {
+            background: #222;
+            color: #00ffff;
+            padding: 15px;
+            text-align: left;
+            border-bottom: 2px solid #00ff00;
+        }
+        .user-table td {
+            padding: 15px;
+            border-bottom: 1px solid #333;
+        }
+        .user-table tr:hover {
+            background: #222;
+        }
+        .export-section {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #111, #222);
+            border: 2px solid #00ff00;
+            border-radius: 12px;
+        }
+        .export-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        .export-btn {
+            background: #222;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .export-btn:hover {
+            background: #333;
+        }
+        .export-btn.primary {
+            background: linear-gradient(90deg, #00ff00, #00ffff);
+            color: #000;
+        }
+        @media (max-width: 1024px) {
+            .stats-overview, .charts-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            .stats-overview, .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            .export-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">📊 sm.fun Analytics</div>
+        <div class="nav">
+            <a href="index.html" class="nav-item">🏠 Home</a>
+            <a href="analytics-dashboard.html" class="nav-item" style="background: #333; border-color: #00ff00;">📈 Analytics</a>
+            <a href="admin/control-panel.html" class="nav-item">⚙️ Admin</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="dashboard-header">
+            <h1>📈 Platform Analytics Dashboard</h1>
+            <p>Real-time insights into user growth, trading activity, and platform performance</p>
+        </div>
+        
+        <!-- 统计概览 -->
+        <div class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-label">Total Users</div>
+                <div class="stat-value">248</div>
+                <div class="stat-change positive">+12.7% this week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Active Today</div>
+                <div class="stat-value">42</div>
+                <div class="stat-change positive">+8.2% from yesterday</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total ICO ETH</div>
+                <div class="stat-value">158.5</div>
+                <div class="stat-change positive">+25.4 ETH this week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Platform Revenue</div>
+                <div class="stat-value">12.8 ETH</div>
+                <div class="stat-change positive">+2.1 ETH this month</div>
+            </div>
+        </div>
+        
+        <!-- 图表 -->
+        <div class="charts-grid">
+            <div class="chart-container">
+                <div class="chart-title">📈 User Growth Trend</div>
+                <div class="chart-placeholder">
+                    User Growth Chart (Coming Soon)
+                </div>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title">💰 ICO Purchase Volume</div>
+                <div class="chart-placeholder">
+                    ICO Volume Chart (Coming Soon)
+                </div>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title">🤖 Trading Activity</div>
+                <div class="chart-placeholder">
+                    Trading Activity Chart (Coming Soon)
+                </div>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title">👥 Referral Performance</div>
+                <div class="chart-placeholder">
+                    Referral Chart (Coming Soon)
+                </div>
+            </div>
+        </div>
+        
+        <!-- 用户分析 -->
+        <div class="user-analytics">
+            <div class="chart-title">👥 User Distribution by Membership Level</div>
+            <table class="user-table">
+                <thead>
+                    <tr>
+                        <th>Membership Level</th>
+                        <th>Users</th>
+                        <th>Percentage</th>
+                        <th>Avg. Investment</th>
+                        <th>Avg. Profits</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span style="color: #CD7F32;">Bronze</span></td>
+                        <td>142</td>
+                        <td>57.3%</td>
+                        <td>0.8 ETH</td>
+                        <td>0.12 ETH</td>
+                    </tr>
+                    <tr>
+                        <td><span style="color: #C0C0C0;">Silver</span></td>
+                        <td>68</td>
+                        <td>27.4%</td>
+                        <td>4.2 ETH</td>
+                        <td>0.85 ETH</td>
+                    </tr>
+                    <tr>
+                        <td><span style="color: #FFD700;">Gold</span></td>
+                        <td>28</td>
+                        <td>11.3%</td>
+                        <td>12.5 ETH</td>
+                        <td>2.8 ETH</td>
+                    </tr>
+                    <tr>
+                        <td><span style="color: #E5E4E2;">Platinum</span></td>
+                        <td>8</td>
+                        <td>3.2%</td>
+                        <td>35.2 ETH</td>
+                        <td>8.5 ETH</td>
+                    </tr>
+                    <tr>
+                        <td><span style="color: #FF0000;">King</span></td>
+                        <td>2</td>
+                        <td>0.8%</td>
+                        <td>100 ETH</td>
+                        <td>25.5 ETH</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- 数据导出 -->
+        <div class="export-section">
+            <div class="chart-title">📤 Export Analytics Data</div>
+            <p style="color: #888; max-width: 800px; margin: 20px auto;">
+                Download detailed analytics reports for further analysis. All data is updated in real-time.
+            </p>
+            <div class="export-buttons">
+                <a href="#" class="export-btn primary" onclick="alert('User data exported as CSV')">Export User Data</a>
+                <a href="#" class="export-btn" onclick="alert('ICO data exported as CSV')">Export ICO Data</a>
+                <a href="#" class="export-btn" onclick="alert('Trading data exported as CSV')">Export Trading Data</a>
+                <a href="#" class="export-btn" onclick="alert('Full report exported as PDF')">Export Full Report</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 模拟实时数据更新
+        function updateStats() {
+            const stats = document.querySelectorAll('.stat-value');
+            if (stats.length >= 4) {
+                // 模拟数据变化
+                const changes = [3, 2, 0.8, 0.3];
+                stats.forEach((stat, index) => {
+                    const current = parseInt(stat.textContent);
+                    const change = changes[index];
+                    const newValue = current + (Math.random() > 0.5 ? change : -change/2);
+                    stat.textContent = Math.max(0, Math.round(newValue));
+                });
+            }
+        }
+        
+        // 每30秒更新一次数据
+        setInterval(updateStats, 30000);
+    </script>
+</body>
+</html>
