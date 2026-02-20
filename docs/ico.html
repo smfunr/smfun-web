@@ -290,7 +290,6 @@
             <a href="index.html" class="nav-item">🏠 Home</a>
             <a href="ico.html" class="nav-item" style="background: #333; border-color: #00ff00;">🚀 ICO</a>
             <a href="auto-trading.html" class="nav-item">🤖 Auto Trading</a>
-            <a href="admin/login.html" class="nav-item">⚙️ Admin</a>
         </div>
     </div>
     
@@ -547,6 +546,10 @@
                         // 保存到本地存储
                         localStorage.setItem('smfun_wallet_account', this.account);
                         localStorage.setItem('smfun_wallet_chainId', this.chainId);
+                        // AUTO-REDIRECT TO PROFILE PAGE AFTER SUCCESSFUL CONNECTION
+                        setTimeout(() => {
+                            window.location.href = "profile.html";
+                        }, 2000);
                         
                         // 监听账户变化
                         window.ethereum.on('accountsChanged', (accounts) => {
@@ -786,7 +789,6 @@
         
         // 自动检查页面状态
         function checkPageStatus() {
-            const pages = ['index.html', 'ico.html', 'auto-trading.html', 'admin/login.html'];
             const status = {};
             
             pages.forEach(page => {

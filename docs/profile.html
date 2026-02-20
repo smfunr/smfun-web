@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sm.fun - Personal Center</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; 
+            color: #00ff00; 
+            font-family: 'Courier New', monospace;
+            overflow-x: hidden;
+        }
+        .header {
+            background: #111;
+            border-bottom: 2px solid #00ff00;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffff00;
+        }
+        .nav {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-item {
+            color: #00ff00;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .nav-item:hover {
+            background: #333;
+            border-color: #00ff00;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        .user-header {
+            background: linear-gradient(90deg, #111, #222);
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #00ff00, #00ffff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: #000;
+        }
+        .user-details h2 {
+            color: #ffff00;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        .user-wallet {
+            color: #00ff00;
+            font-family: monospace;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .user-level {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #222;
+            border: 1px solid #00ff00;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #00ff00;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: #222;
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #ffff00;
+            margin: 10px 0;
+        }
+        .stat-label {
+            color: #888;
+            font-size: 14px;
+        }
+        .section {
+            background: #111;
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        .section-title {
+            color: #00ffff;
+            font-size: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .shares-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .share-card {
+            background: #222;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .share-title {
+            color: #00ffff;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .share-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffff00;
+            margin-bottom: 5px;
+        }
+        .profit-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .profit-table th {
+            background: #222;
+            color: #00ffff;
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid #00ff00;
+        }
+        .profit-table td {
+            padding: 12px;
+            border-bottom: 1px solid #333;
+        }
+        .profit-table tr:hover {
+            background: #222;
+        }
+        .profit-amount {
+            color: #00ff00;
+            font-weight: bold;
+        }
+        .profit-negative {
+            color: #ff0000;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .btn {
+            background: #222;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .btn:hover {
+            background: #333;
+        }
+        .btn.primary {
+            background: linear-gradient(90deg, #00ff00, #00ffff);
+            color: #000;
+        }
+        .btn.large {
+            padding: 15px 30px;
+            font-size: 16px;
+        }
+        .membership-badges {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .badge.bronze { background: #CD7F32; color: #000; }
+        .badge.silver { background: #C0C0C0; color: #000; }
+        .badge.gold { background: #FFD700; color: #000; }
+        .badge.platinum { background: #E5E4E2; color: #000; }
+        .badge.king { background: #FF0000; color: #fff; }
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .shares-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            .stats-grid, .shares-grid {
+                grid-template-columns: 1fr;
+            }
+            .user-header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">sm.fun Personal Center</div>
+        <div class="nav">
+            <a href="index.html" class="nav-item">🏠 Home</a>
+            <a href="ico.html" class="nav-item">🚀 ICO</a>
+            <a href="auto-trading.html" class="nav-item">🤖 Auto Trading</a>
+            <a href="profile.html" class="nav-item" style="background: #333; border-color: #00ff00;">👤 Profile</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- 用户头部信息 -->
+        <div class="user-header">
+            <div class="user-info">
+                <div class="user-avatar">👤</div>
+                <div class="user-details">
+                    <h2 id="username">Loading...</h2>
+                    <div class="user-wallet" id="wallet-address">0x0000...0000</div>
+                    <span class="user-level" id="membership-level">Bronze</span>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button class="btn primary large" onclick="buyMoreShares()">Buy More Shares</button>
+                <button class="btn large" onclick="withdrawProfits()">Withdraw Profits</button>
+            </div>
+        </div>
+        
+        <!-- 统计卡片 -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Shares</div>
+                <div class="stat-value" id="total-shares">0</div>
+                <div style="color: #888; font-size: 12px;">Investment: <span id="total-investment">0 ETH</span></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Profits</div>
+                <div class="stat-value" id="total-profits">0 ETH</div>
+                <div style="color: #00ff00; font-size: 12px;">This month: <span id="monthly-profit">0 ETH</span></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Profit Share</div>
+                <div class="stat-value" id="profit-share">0%</div>
+                <div style="color: #888; font-size: 12px;">Voting power: <span id="voting-power">0 votes</span></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Invite Rewards</div>
+                <div class="stat-value" id="invite-count">0</div>
+                <div style="color: #888; font-size: 12px;">Earned: <span id="invite-earnings">0 ETH</span></div>
+            </div>
+        </div>
+        
+        <!-- 我的份额 -->
+        <div class="section">
+            <div class="section-title">📊 My Shares</div>
+            <div class="shares-grid">
+                <div class="share-card">
+                    <div class="share-title">ICO Shares</div>
+                    <div class="share-value" id="ico-shares">0</div>
+                    <div style="color: #888; font-size: 14px;">Value: <span id="ico-value">0 ETH</span></div>
+                    <div style="color: #00ff00; font-size: 12px; margin-top: 10px;">+35% platform fee sharing</div>
+                </div>
+                <div class="share-card">
+                    <div class="share-title">Trading Shares</div>
+                    <div class="share-value" id="trading-shares">0</div>
+                    <div style="color: #888; font-size: 14px;">Value: <span id="trading-value">0 ETH</span></div>
+                    <div style="color: #00ff00; font-size: 12px; margin-top: 10px;">Auto-trading profits</div>
+                </div>
+                <div class="share-card">
+                    <div class="share-title">Referral Shares</div>
+                    <div class="share-value" id="referral-shares">0</div>
+                    <div style="color: #888; font-size: 14px;">Value: <span id="referral-value">0 ETH</span></div>
+                    <div style="color: #00ff00; font-size: 12px; margin-top: 10px;">From invited users</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 收益记录 -->
+        <div class="section">
+            <div class="section-title">💰 Profit History</div>
+            <table class="profit-table" id="profit-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Source</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="profit-table-body">
+                    <!-- 收益记录将通过JS动态生成 -->
+                </tbody>
+            </table>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn" onclick="loadMoreProfits()">Load More</button>
+                <button class="btn" onclick="exportProfits()">Export CSV</button>
+            </div>
+        </div>
+        
+        <!-- 会员等级 -->
+        <div class="section">
+            <div class="section-title">🎫 Membership Level</div>
+            <div class="membership-badges">
+                <div class="badge bronze">Bronze (1-9 shares)</div>
+                <div class="badge silver">Silver (10-49)</div>
+                <div class="badge gold">Gold (50-199)</div>
+                <div class="badge platinum">Platinum (200-499)</div>
+                <div class="badge king">King (500+)</div>
+            </div>
+            <div style="margin-top: 20px;">
+                <div style="color: #888; margin-bottom: 10px;">Your progress to next level:</div>
+                <div style="background: #222; height: 20px; border-radius: 10px; overflow: hidden;">
+                    <div id="level-progress" style="height: 100%; background: linear-gradient(90deg, #00ff00, #00ffff); width: 15%;"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 5px; color: #888; font-size: 12px;">
+                    <span>Current: <span id="current-level">Bronze</span></span>
+                    <span>Next: <span id="next-level">Silver</span> (<span id="needed-shares">10</span> shares)</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 邀请系统 -->
+        <div class="section">
+            <div class="section-title">👥 Invite Friends</div>
+            <div style="background: #222; border: 1px solid #00ff00; border-radius: 8px; padding: 20px;">
+                <div style="color: #00ffff; font-weight: bold; margin-bottom: 10px;">Your Invite Code:</div>
+                <div style="background: #000; padding: 15px; border-radius: 4px; font-family: monospace; font-size: 18px; color: #ffff00; margin-bottom: 20px; text-align: center;" id="invite-code">SMF-XXXXXX</div>
+                <div style="color: #888; margin-bottom: 15px;">
+                    Share this code with friends. When they sign up and buy shares, you earn 5% of their purchases!
+                </div>
+                <div class="action-buttons">
+                    <button class="btn" onclick="copyInviteCode()">Copy Code</button>
+                    <button class="btn" onclick="shareInviteLink()">Share Link</button>
+                    <button class="btn" onclick="viewInviteTree()">View Invite Tree</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 用户数据
+        const userData = {
+            walletAddress: '',
+            username: 'User',
+            membershipLevel: 'bronze',
+            totalShares: 0,
+            totalInvestment: 0,
+            totalProfits: 0,
+            monthlyProfit: 0,
+            inviteCount: 0,
+            inviteEarnings: 0,
+            shares: {
+                ico: 0,
+                trading: 0,
+                referral: 0
+            },
+            profits: []
+        };
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadUserData();
+            updateUI();
+            generateProfitHistory();
+        });
+        
+        // 加载用户数据
+        async function loadUserData() {
+            // 从localStorage获取钱包地址
+            const savedAccount = localStorage.getItem('smfun_wallet_account');
+            if (!savedAccount) {
+                // 如果没有连接钱包，重定向到首页
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            userData.walletAddress = savedAccount;
+            
+            // 模拟从API加载用户数据
+            // 这里应该是真实的API调用
+            // const response = await fetch(`/api/user/${savedAccount}`);
+            // const data = await response.json();
+            
+            // 模拟数据
+            userData.username = `User_${savedAccount.substring(2, 6)}`;
+            userData.totalShares = 25;
+            userData.totalInvestment = 2.5;
+            userData            userData.totalProfits = 0.642;
+            userData.monthlyProfit = 0.128;
+            userData.inviteCount = 3;
+            userData.inviteEarnings = 0.15;
+            userData.shares = {
+                ico: 20,
+                trading: 3,
+                referral: 2
+            };
+            
+            // 计算会员等级
+            calculateMembershipLevel();
+            
+            // 生成邀请码
+            userData.inviteCode = `SMF-${savedAccount.substring(2, 8).toUpperCase()}`;
+        }
+        
+        // 计算会员等级
+        function calculateMembershipLevel() {
+            const total = userData.totalShares;
+            
+            if (total >= 500) {
+                userData.membershipLevel = 'king';
+                userData.nextLevel = null;
+                userData.neededShares = 0;
+                userData.levelProgress = 100;
+            } else if (total >= 200) {
+                userData.membershipLevel = 'platinum';
+                userData.nextLevel = 'king';
+                userData.neededShares = 500 - total;
+                userData.levelProgress = ((total - 200) / 300) * 100;
+            } else if (total >= 50) {
+                userData.membershipLevel = 'gold';
+                userData.nextLevel = 'platinum';
+                userData.neededShares = 200 - total;
+                userData.levelProgress = ((total - 50) / 150) * 100;
+            } else if (total >= 10) {
+                userData.membershipLevel = 'silver';
+                userData.nextLevel = 'gold';
+                userData.neededShares = 50 - total;
+                userData.levelProgress = ((total - 10) / 40) * 100;
+            } else {
+                userData.membershipLevel = 'bronze';
+                userData.nextLevel = 'silver';
+                userData.neededShares = 10 - total;
+                userData.levelProgress = (total / 10) * 100;
+            }
+            
+            // 计算分红比例和投票权
+            userData.profitShare = ((userData.totalShares / 10000) * 100).toFixed(2);
+            userData.votingPower = userData.totalShares;
+        }
+        
+        // 更新UI
+        function updateUI() {
+            // 用户信息
+            document.getElementById('username').textContent = userData.username;
+            document.getElementById('wallet-address').textContent = 
+                `${userData.walletAddress.substring(0, 6)}...${userData.walletAddress.substring(38)}`;
+            document.getElementById('membership-level').textContent = 
+                userData.membershipLevel.charAt(0).toUpperCase() + userData.membershipLevel.slice(1);
+            
+            // 统计卡片
+            document.getElementById('total-shares').textContent = userData.totalShares;
+            document.getElementById('total-investment').textContent = `${userData.totalInvestment} ETH`;
+            document.getElementById('total-profits').textContent = `${userData.totalProfits} ETH`;
+            document.getElementById('monthly-profit').textContent = `${userData.monthlyProfit} ETH`;
+            document.getElementById('profit-share').textContent = `${userData.profitShare}%`;
+            document.getElementById('voting-power').textContent = `${userData.votingPower} votes`;
+            document.getElementById('invite-count').textContent = userData.inviteCount;
+            document.getElementById('invite-earnings').textContent = `${userData.inviteEarnings} ETH`;
+            
+            // 份额信息
+            document.getElementById('ico-shares').textContent = userData.shares.ico;
+            document.getElementById('ico-value').textContent = `${userData.shares.ico * 0.1} ETH`;
+            document.getElementById('trading-shares').textContent = userData.shares.trading;
+            document.getElementById('trading-value').textContent = `${userData.shares.trading * 0.05} ETH`;
+            document.getElementById('referral-shares').textContent = userData.shares.referral;
+            document.getElementById('referral-value').textContent = `${userData.shares.referral * 0.02} ETH`;
+            
+            // 会员等级进度
+            document.getElementById('current-level').textContent = 
+                userData.membershipLevel.charAt(0).toUpperCase() + userData.membershipLevel.slice(1);
+            document.getElementById('next-level').textContent = 
+                userData.nextLevel ? userData.nextLevel.charAt(0).toUpperCase() + userData.nextLevel.slice(1) : 'MAX';
+            document.getElementById('needed-shares').textContent = userData.neededShares;
+            document.getElementById('level-progress').style.width = `${Math.min(100, userData.levelProgress)}%`;
+            
+            // 邀请码
+            document.getElementById('invite-code').textContent = userData.inviteCode;
+        }
+        
+        // 生成收益历史
+        function generateProfitHistory() {
+            const tableBody = document.getElementById('profit-table-body');
+            tableBody.innerHTML = '';
+            
+            const sampleProfits = [
+                { date: '2026-02-20', amount: 0.042, source: 'ICO Distribution', status: 'Completed' },
+                { date: '2026-02-15', amount: 0.038, source: 'Trading Fee', status: 'Completed' },
+                { date: '2026-02-10', amount: 0.051, source: 'Platform Revenue', status: 'Completed' },
+                { date: '2026-02-05', amount: 0.028, source: 'Referral Bonus', status: 'Completed' },
+                { date: '2026-01-31', amount: 0.089, source: 'Monthly Distribution', status: 'Completed' },
+                { date: '2026-01-25', amount: 0.035, source: 'Trading Fee', status: 'Completed' },
+                { date: '2026-01-20', amount: 0.042, source: 'ICO Distribution', status: 'Completed' },
+                { date: '2026-01-15', amount: 0.031, source: 'Platform Revenue', status: 'Completed' }
+            ];
+            
+            sampleProfits.forEach(profit => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${profit.date}</td>
+                    <td class="profit-amount">${profit.amount} ETH</td>
+                    <td>${profit.source}</td>
+                    <td><span style="color: #00ff00;">${profit.status}</span></td>
+                `;
+                tableBody.appendChild(row);
+            });
+            
+            userData.profits = sampleProfits;
+        }
+        
+        // 功能函数
+        function buyMoreShares() {
+            window.location.href = 'ico.html';
+        }
+        
+        function withdrawProfits() {
+            if (userData.totalProfits <= 0) {
+                alert('No profits available for withdrawal');
+                return;
+            }
+            
+            if (confirm(`Withdraw ${userData.totalProfits} ETH to your wallet?`)) {
+                alert(`Withdrawal request submitted for ${userData.totalProfits} ETH. Processing time: 1-3 business days.`);
+                // 这里应该是真实的提现API调用
+            }
+        }
+        
+        function copyInviteCode() {
+            navigator.clipboard.writeText(userData.inviteCode)
+                .then(() => alert('Invite code copied to clipboard!'))
+                .catch(() => alert('Failed to copy invite code'));
+        }
+        
+        function shareInviteLink() {
+            const link = `https://smfunr.github.io/smfun-web/?ref=${userData.inviteCode}`;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Join sm.fun - AI Trading Platform',
+                    text: `Use my invite code ${userData.inviteCode} to get started!`,
+                    url: link
+                });
+            } else {
+                navigator.clipboard.writeText(link)
+                    .then(() => alert('Invite link copied to clipboard!'))
+                    .catch(() => alert('Failed to copy invite link'));
+            }
+        }
+        
+        function viewInviteTree() {
+            alert('Invite tree feature coming soon!');
+        }
+        
+        function loadMoreProfits() {
+            alert('Loading more profit records...');
+            // 这里应该是加载更多收益记录的API调用
+        }
+        
+        function exportProfits() {
+            // 创建CSV数据
+            let csv = 'Date,Amount (ETH),Source,Status\n';
+            userData.profits.forEach(profit => {
+                csv += `${profit.date},${profit.amount},${profit.source},${profit.status}\n`;
+            });
+            
+            // 创建下载链接
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `smfun-profits-${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert('Profit history exported as CSV!');
+        }
+        
+        // 监听钱包账户变化
+        if (typeof window.ethereum !== 'undefined') {
+            window.ethereum.on('accountsChanged', (accounts) => {
+                if (accounts.length === 0) {
+                    // 钱包断开连接，重定向到首页
+                    localStorage.removeItem('smfun_wallet_account');
+                    localStorage.removeItem('smfun_wallet_chainId');
+                    window.location.href = 'index.html';
+                } else if (accounts[0] !== userData.walletAddress) {
+                    // 账户变化，重新加载数据
+                    localStorage.setItem('smfun_wallet_account', accounts[0]);
+                    location.reload();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

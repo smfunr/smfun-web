@@ -1,0 +1,31 @@
+[
+  {
+    "timestamp": "2026-02-20T18:05:43.328Z",
+    "results": [
+      {
+        "name": "Home",
+        "url": "https://smfunr.github.io/smfun-web/index.html",
+        "status": 200,
+        "ok": true
+      },
+      {
+        "name": "ICO",
+        "url": "https://smfunr.github.io/smfun-web/ico.html",
+        "status": 200,
+        "ok": true
+      },
+      {
+        "name": "Auto Trading",
+        "url": "https://smfunr.github.io/smfun-web/auto-trading.html",
+        "status": 200,
+        "ok": true
+      },
+      {
+        "name": "Admin Login",
+        "url": "https://smfunr.github.io/smfun-web/admin/login.html",
+        "status": 200,
+        "ok": true
+      }
+    ]
+  }
+]
