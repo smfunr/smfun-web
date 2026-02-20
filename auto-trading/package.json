@@ -1,0 +1,33 @@
+{
+  "name": "smfun-auto-trading",
+  "version": "1.0.0",
+  "description": "sm.fun 自动交易合约和预测市场系统",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "jest",
+    "deploy:contracts": "hardhat run scripts/deploy.js --network sepolia"
+  },
+  "dependencies": {
+    "ethers": "^6.9.0",
+    "web3": "^4.2.2",
+    "axios": "^1.6.2",
+    "dotenv": "^16.3.1",
+    "node-cron": "^3.0.3",
+    "winston": "^3.11.0",
+    "ccxt": "^4.2.17",
+    "technicalindicators": "^3.1.0",
+    "moment": "^2.29.4",
+    "uuid": "^9.0.1",
+    "pg": "^8.11.3",
+    "redis": "^4.6.10",
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2"
+  },
+  "devDependencies": {
+    "hardhat": "^2.19.4",
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@openzeppelin/contracts": "^4.9.3"
+  }
+}
