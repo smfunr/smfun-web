@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sm.fun Admin - Dashboard</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; 
+            color: #00ff00; 
+            font-family: 'Courier New', monospace;
+        }
+        .admin-header {
+            background: #111;
+            border-bottom: 2px solid #00ff00;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .admin-logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffff00;
+        }
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .user-badge {
+            background: linear-gradient(90deg, #ff00ff, #00ffff);
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .admin-nav {
+            background: #222;
+            border-bottom: 1px solid #00ff00;
+            padding: 10px 30px;
+            display: flex;
+            gap: 20px;
+        }
+        .nav-item {
+            color: #00ff00;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .nav-item:hover, .nav-item.active {
+            background: #333;
+            border-color: #00ff00;
+        }
+        .admin-content {
+            padding: 30px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: #111;
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #ffff00;
+            margin: 10px 0;
+        }
+        .stat-label {
+            color: #888;
+            font-size: 14px;
+        }
+        .stat-change {
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        .stat-change.positive { color: #00ff00; }
+        .stat-change.negative { color: #ff0000; }
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .action-card {
+            background: #111;
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+        }
+        .action-card:hover {
+            background: #222;
+            border-color: #ffff00;
+        }
+        .action-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .action-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #00ffff;
+        }
+        .recent-activity {
+            background: #111;
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .activity-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+        }
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        .activity-time {
+            color: #888;
+            font-size: 12px;
+        }
+        .logout-btn {
+            background: #333;
+            color: #ff0000;
+            border: 1px solid #ff0000;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .logout-btn:hover {
+            background: #ff0000;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <div class="admin-logo">sm.fun ADMIN</div>
+        <div class="admin-user">
+            <div>
+                <div style="font-weight: bold;">smfunr@gmail.com</div>
+                <div style="font-size: 12px; color: #888;">Super Admin</div>
+            </div>
+            <div class="user-badge">OWNER</div>
+            <button class="logout-btn" id="logout-btn">LOGOUT</button>
+        </div>
+    </div>
+    
+    <div class="admin-nav">
+        <a href="dashboard.html" class="nav-item active">📊 Dashboard</a>
+        <a href="users.html" class="nav-item">👥 Users</a>
+        <a href="wallet.html" class="nav-item">💰 Wallet</a>
+        <a href="ico.html" class="nav-item">🚀 ICO</a>
+        <a href="transactions.html" class="nav-item">💸 Transactions</a>
+        <a href="config.html" class="nav-item">⚙️ Config</a>
+    </div>
+    
+    <div class="admin-content">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Users</div>
+                <div class="stat-value">1,842</div>
+                <div class="stat-change positive">+12.5% today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Platform Balance</div>
+                <div class="stat-value">542.8 ETH</div>
+                <div class="stat-change positive">+8.2 ETH today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">ICO Progress</div>
+                <div class="stat-value">35.4%</div>
+                <div class="stat-change positive">3,542/10,000 parts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Daily Fees</div>
+                <div class="stat-value">12.5 ETH</div>
+                <div class="stat-change positive">+24.3% yesterday</div>
+            </div>
+        </div>
+        
+        <div class="quick-actions">
+            <div class="action-card" onclick="window.location.href='users.html'">
+                <div class="action-icon">👤</div>
+                <div class="action-title">Add New User</div>
+                <div style="font-size: 12px; color: #888;">Create manual user account</div>
+            </div>
+            <div class="action-card" onclick="window.location.href='wallet.html'">
+                <div class="action-icon">💰</div>
+                <div class="action-title">Withdraw Funds</div>
+                <div style="font-size: 12px; color: #888;">Transfer ETH to external wallet</div>
+            </div>
+            <div class="action-card" onclick="window.location.href='ico.html'">
+                <div class="action-icon">🚀</div>
+                <div class="action-title">Update ICO Price</div>
+                <div style="font-size: 12px; color: #888;">Change part price or supply</div>
+            </div>
+            <div class="action-card" onclick="window.location.href='transactions.html'">
+                <div class="action-icon">🔍</div>
+                <div class="action-title">Audit Transactions</div>
+                <div style="font-size: 12px; color: #888;">Review suspicious activity</div>
+            </div>
+            <div class="action-card" onclick="window.location.href='config.html'">
+                <div class="action-icon">⚙️</div>
+                <div class="action-title">System Settings</div>
+                <div style="font-size: 12px; color: #888;">Configure platform parameters</div>
+            </div>
+            <div class="action-card" onclick="showApiKeys()">
+                <div class="action-icon">🔑</div>
+                <div class="action-title">API Keys</div>
+                <div style="font-size: 12px; color: #888;">Manage external integrations</div>
+            </div>
+        </div>
+        
+        <div class="recent-activity">
+            <h3 style="margin-bottom: 15px; color: #ffff00;">Recent Admin Activity</h3>
+            <div class="activity-item">
+                <div>✅ ICO price updated to 0.1 ETH/part</div>
+                <div class="activity-time">2 minutes ago</div>
+            </div>
+            <div class="activity-item">
+                <div>👤 User "crypto_trader_88" level upgraded to Gold</div>
+                <div class="activity-time">15 minutes ago</div>
+            </div>
+            <div class="activity-item">
+                <div>💰 Withdrawal approved: 5.2 ETH to 0x8f3...c2d1</div>
+                <div class="activity-time">1 hour ago</div>
+            </div>
+            <div class="activity-item">
+                <div>⚙️ Fee distribution schedule updated</div>
+                <div class="activity-time">3 hours ago</div>
+            </div>
+            <div class="activity-item">
+                <div>🔐 Security settings: 2FA enabled for all admins</div>
+                <div class="activity-time">5 hours ago</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+    <script>
+        // Simple authentication check
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                const session = localStorage.getItem('admin_session');
+                if (!session) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                const sessionData = JSON.parse(session);
+                const loginTime = new Date(sessionData.loginTime);
+                const now = new Date();
+                const hoursDiff = (now - loginTime) / (1000 * 60 * 60);
+                
+                if (hoursDiff > 24) {
+                    localStorage.removeItem('admin_session');
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                // Update user display
+                const userDisplay = document.querySelector('.admin-user div:first-child div:first-child');
+                if (userDisplay) {
+                    userDisplay.textContent = sessionData.email;
+                }
+                
+                // Logout button
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function() {
+                        localStorage.removeItem('admin_session');
+                        window.location.href = 'login.html';
+                    });
+                }
+                
+            } catch (error) {
+                localStorage.removeItem('admin_session');
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+</body>
+</html>

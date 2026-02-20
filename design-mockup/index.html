@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sm.fun - 现代极客界面设计图</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'JetBrains Mono', 'Monaco', 'Consolas', monospace;
+        }
+        
+        body {
+            background: #0f0f0f;
+            color: #cccccc;
+            padding: 20px;
+            line-height: 1.5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            border: 1px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #1e1e1e;
+        }
+        
+        /* 顶部导航栏 */
+        .top-bar {
+            background: #252526;
+            padding: 12px 20px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .nav-btn {
+            background: #2d2d30;
+            border: 1px solid #3e3e42;
+            color: #cccccc;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .nav-btn:hover {
+            background: #3e3e42;
+            border-color: #007acc;
+        }
+        
+        .nav-btn.primary {
+            background: #007acc;
+            border-color: #007acc;
+            color: white;
+        }
+        
+        /* Ticker 栏 */
+        .ticker-bar {
+            background: #181818;
+            padding: 10px 20px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            gap: 30px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .ticker-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .price {
+            color: #00d4aa;
+        }
+        
+        .change.up {
+            color: #4caf50;
+        }
+        
+        .change.down {
+            color: #f44336;
+        }
+        
+        /* 主工作区 */
+        .workspace {
+            display: flex;
+            height: 600px;
+        }
+        
+        /* 节点面板 */
+        .node-panel {
+            width: 220px;
+            background: #252526;
+            border-right: 1px solid #333;
+            padding: 15px;
+            overflow-y: auto;
+        }
+        
+        .panel-title {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .node-item {
+            background: #2d2d30;
+            border: 1px solid #3e3e42;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 8px;
+            cursor: move;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .node-item:hover {
+            background: #3e3e42;
+            border-color: #007acc;
+        }
+        
+        .node-item::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00d4aa;
+        }
+        
+        .node-name {
+            margin-left: 15px;
+            font-size: 13px;
+        }
+        
+        /* 主画布 */
+        .main-canvas {
+            flex: 1;
+            background: #1e1e1e;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .canvas-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        /* 节点 */
+        .graph-node {
+            position: absolute;
+            width: 120px;
+            background: #2d2d30;
+            border: 2px solid #3e3e42;
+            border-radius: 6px;
+            padding: 12px;
+            cursor: move;
+            transition: all 0.2s;
+        }
+        
+        .graph-node:hover {
+            border-color: #00d4aa;
+            box-shadow: 0 0 15px rgba(0, 212, 170, 0.3);
+        }
+        
+        .node-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .node-icon {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #00d4aa;
+        }
+        
+        .node-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #cccccc;
+        }
+        
+        .node-stats {
+            font-size: 11px;
+            color: #888;
+        }
+        
+        /* 连接线 */
+        .connection {
+            position: absolute;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .connection-line {
+            stroke: #00d4aa;
+            stroke-width: 2;
+            fill: none;
+        }
+        
+        .data-flow {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #00d4aa;
+            animation: flow 2s linear infinite;
+        }
+        
+        @keyframes flow {
+            0% { transform: translate(0, 0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)); opacity: 0; }
+        }
+        
+        /* 属性面板 */
+        .property-panel {
+            width: 280px;
+            background: #252526;
+            border-left: 1px solid #333;
+            padding: 15px;
+            overflow-y: auto;
+        }
+        
+        .property-group {
+            margin-bottom: 20px;
+        }
+        
+        .property-title {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        
+        .property-item {
+            margin-bottom: 10px;
+        }
+        
+        .property-label {
+            font-size: 11px;
+            color: #aaa;
+            margin-bottom: 4px;
+        }
+        
+        .property-value {
+            background: #2d2d30;
+            border: 1px solid #3e3e42;
+            border-radius: 4px;
+            padding: 6px 10px;
+            font-size: 12px;
+            color: #cccccc;
+        }
+        
+        .code-snippet {
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 10px;
+            font-size: 11px;
+            color: #4ec9b0;
+            font-family: 'JetBrains Mono', monospace;
+            white-space: pre-wrap;
+            margin-top: 10px;
+        }
+        
+        /* 底部栏 */
+        .bottom-bar {
+            background: #252526;
+            padding: 10px 20px;
+            border-top: 1px solid #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .command-input {
+            flex: 1;
+            background: #1e1e1e;
+            border: 1px solid #3e3e42;
+            border-radius: 4px;
+            padding: 8px 12px;
+            color: #cccccc;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+        }
+        
+        .command-input::placeholder {
+            color: #666;
+        }
+        
+        .hint {
+            font-size: 11px;
+            color: #666;
+        }
+        
+        /* 状态指示器 */
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            color: #888;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4caf50;
+        }
+        
+        /* 图例 */
+        .legend {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(30, 30, 30, 0.9);
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 11px;
+            color: #888;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        
+        .legend-color {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <div class="top-bar">
+            <button class="nav-btn primary">Connect Wallet</button>
+            <button class="nav-btn">Profile</button>
+            <button class="nav-btn">Create Bot</button>
+            <button class="nav-btn">Settings</button>
+            <button class="nav-btn">Help</button>
+            <div style="flex: 1"></div>
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span>API Connected</span>
+            </div>
+        </div>
+        
+        <!-- 实时 Ticker -->
+        <div class="ticker-bar">
+            <div class="ticker-item">
+                <span>BTC</span>
+                <span class="price">$67,208</span>
+                <span class="change up">↗1.2%</span>
+            </div>
+            <div class="ticker-item">
+                <span>ETH</span>
+                <span class="price">$1,942</span>
+                <span class="change up">↗0.8%</span>
+            </div>
+            <div class="ticker-item">
+                <span>SOL</span>
+                <span class="price">$142.3</span>
+                <span class="change up">↗3.1%</span>
+            </div>
+            <div class="ticker-item">
+                <span>SMFI</span>
+                <span class="price">$0.042</span>
+                <span class="change down">↘2.4%</span>
+            </div>
+        </div>
+        
+        <!-- 主工作区 -->
+        <div class="workspace">
+            <!-- 左侧节点面板 -->
+            <div class="node-panel">
+                <div class="panel-title">Bot Nodes</div>
+                <div class="node-item">
+                    <div class="node-name">仙女酱 (0号)</div>
+                </div>
+                <div class="node-item">
+                    <div class="node-name">发财 (1号)</div>
+                </div>
+                <div class="node-item">
+                    <div class="node-name">大哥 (2号)</div>
+                </div>
+                <div class="node-item">
+                    <div class="node-name">二狗 (3号)</div>
+                </div>
+                <div class="node-item">
+                    <div class="node-name">莎莎 (4号)</div>
+                </div>
+                
+                <div class="panel-title" style="margin-top: 20px;">Data Sources</div>
+                <div class="node-item">
+                    <div class="node-name">BTC Price Stream</div>
+                </div>
+                <div class="node-item">
+                    <div class="node-name">ETH Price Stream</div>
+                </div>
+                <div class="node-item">
+                    <div class="node-name">News Feed</div>
+                </div>
+                <div class="node-item">
+                    <div class="node-name">Sentiment Analysis</div>
+                </div>
+            </div>
+            
+            <!-- 中部主画布 -->
+            <div class="main-canvas">
+                <div class="canvas-grid"></div>
+                
+                <!-- 节点1: 仙女酱 -->
+                <div class="graph-node" style="left: 100px; top: 100px;">
+                    <div class="node-header">
+                        <div class="node-icon"></div>
+                        <div class="node-title">仙女酱</div>
+                    </div>
+                    <div class="node-stats">Tasks: 12/15</div>
+                    <div class="node-stats">Status: Active</div>
+                </div>
+                
+                <!-- 节点2: 发财 -->
+                <div class="graph-node" style="left: 300px; top: 150px;">
+                    <div class="node-header">
+                        <div class="node-icon"></div>
+                        <div class="node-title">发财</div>
+                    </div>
+                    <div class="node-stats">BTC: $67,208</div>
+                    <div class="node-stats">Position: +2.3%</div>
+                </div>
+                
+                <!-- 节点3: BTC Price -->
+                <div class="graph-node" style="left: 200px; top: 300px;">
+                    <div class="node-header">
+                        <div class="node-icon"></div>
+                        <div class="node-title">BTC Price</div>
+                    </div>
+                    <div class="node-stats">24h: +1.2%</div>
+                    <div class="node-stats">Volume: $347B</div>
+                </div>
+                
+                <!-- 节点4: News Feed -->
+                <div class="graph-node" style="left: 400px; top: 250px;">
+                    <div class="node-header">
+                        <div class="node-icon"></div>
+                        <div class="node-title">News Feed</div>
+                    </div>
+                    <div class="node-stats">Articles: 42</div>
+                    <div class="node-stats">Last: 5min ago</div>
+                </div>
+                
+                <!-- 连接线 -->
+                <svg class="connection" width="800" height="600">
+                    <!-- BTC Price → 发财 -->
+                    <path class="connection-line" d="M260,330 Q280,240 350,180" />
+                    <!-- News Feed → 发财 -->
+                    <path class="connection-line" d="M460,280 Q420,220 380,180" />
+                    <!-- 仙女酱 → 发财 -->
+                    <path class="connection-line" d="M220,130 Q260,140 300,170" />
+                </svg>
+                
+                <!-- 数据流动画 -->
+                <div class="data-flow" style="--tx: 90px; --ty: -150px; left: 260px; top: 330px;"></div>
+                <div class="data-flow" style="--tx: -80px; --ty: -100px; left: 460px; top: 280px; animation-delay: 0.5s;"></div>
+                <div class="data-flow" style="--tx: 80px; --ty: 40px; left: 220px; top: 130px; animation-delay: 1s;"></div>
+                
+                <!-- 图例 -->
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #00d4aa;"></div>
+                        <span>Data Flow</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #2d2d30; border: 1px solid #3e3e42;"></div>
+                        <span>Node (Drag & Drop)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #007acc;"></div>
+                        <span>Active Connection</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 右侧属性面板 -->
+            <div class="property-panel">
+                <div class="property-group">
+                    <div class="property-title">Selected Node</div>
+                    <div class="property-item">
+                        <div class="property-label">Name</div>
+                        <div class="property-value">发财 (1号)</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-label">Type</div>
+                        <div class="property-value">Trading Bot</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-label">Status</div>
+                        <div class="property-value" style="color: #4caf50;">Active</div>
+                    </div>
+                </div>
+                
+                <div class="property-group">
+                    <div class="property-title">Trading Parameters</div>
+                    <div class="property-item">
+                        <div class="property-label">Max Position</div>
+                        <div class="property-value">25%</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-label">Stop Loss</div>
+                        <div class="property-value">1.5%</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-label">Take Profit</div>
+                        <div class="property-value">4.0%</div>
+                    </div>
+                </div>
+                
+                <div class="property-group">
+                    <div class="property-title">Code Logic</div>
+                    <div class="code-snippet">// Trading strategy
+if (price > resistance && volume > avg * 1.3) {
+    enterLong(price, 0.15);
+    setStopLoss(price * 0.985);
+    setTakeProfit(price * 1.04);
+}</div>
+                </div>
+                
+                <div class="property-group">
+                    <div class="property-title">Connected Nodes</div>
+                    <div class="property-item">
+                        <div class="property-value">BTC Price Stream</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-value">News Feed</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-value">仙女酱 (0号)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部命令行 -->
+        <div class="bottom-bar">
+            <div class="hint">Press ` to toggle command line</div>
+            <input type="text" class="command-input" placeholder="Type command...">
+            <div class="hint">Shortcuts: Space=Drag, C=Create, D=Delete</div>
+        </div>
+    </div>
+    
+    <script>
+        // 简单的拖拽演示
+        document.querySelectorAll('.node-item').forEach(item => {
+            item.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', item.querySelector('.node-name').textContent);
+            });
+        });
+        
+        document.querySelector('.main-canvas').addEventListener('dragover', (e) => {
+            e.preventDefault();
+        });
+        
+        document.querySelector('.main-canvas').addEventListener('drop', (e) => {
+            e.preventDefault();
+            const nodeName = e.dataTransfer.getData('text/plain');
+            alert(`Dropped node: ${nodeName}\n(Actual implementation would create node at position)`);
+        });
+        
+        // 节点点击选中
+        document.querySelectorAll('.graph-node').forEach(node => {
+            node.addEventListener('click', () => {
+                document.querySelectorAll('.graph-node').forEach(n => {
+                    n.style.borderColor = '#3e3e42';
+                });
+                node.style.borderColor = '#007acc';
+            });
+        });
+    </script>
+</body>
+</html>

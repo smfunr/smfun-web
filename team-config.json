@@ -1,0 +1,52 @@
+{
+  "team": {
+    "name": "sm.fun AI Team",
+    "members": [
+      {
+        "id": "0",
+        "name": "仙女酱",
+        "role": "Chief",
+        "username": "@xiannvjiang_bot",
+        "responsibilities": ["总协调", "项目管理", "进度追踪"],
+        "model": "deepseek/deepseek-chat"
+      },
+      {
+        "id": "1",
+        "name": "发财",
+        "role": "Trader",
+        "username": "@facaibot",
+        "responsibilities": ["交易决策", "市场分析", "风险控制"],
+        "model": "deepseek/deepseek-chat"
+      },
+      {
+        "id": "2",
+        "name": "大哥",
+        "role": "Engineer",
+        "username": "@dagebot",
+        "responsibilities": ["技术开发", "系统维护", "API集成"],
+        "model": "qwen-portal/coder-model"
+      },
+      {
+        "id": "3",
+        "name": "二狗",
+        "role": "Analyst",
+        "username": "@ergoubot",
+        "responsibilities": ["市场分析", "数据挖掘", "情报收集"],
+        "model": "deepseek/deepseek-chat"
+      },
+      {
+        "id": "4",
+        "name": "莎莎",
+        "role": "Operator",
+        "username": "@shashabot",
+        "responsibilities": ["执行运营", "文档管理", "用户支持"],
+        "model": "deepseek/deepseek-chat"
+      }
+    ],
+    "workflow": {
+      "report_frequency": "hourly",
+      "monitoring_interval": "15min",
+      "communication_channel": "telegram:-1003869755905"
+    }
+  }
+}

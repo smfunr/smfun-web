@@ -1,0 +1,17 @@
+{
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "dmPolicy": "pairing",
+      "groupPolicy": "allowlist",
+      "streamMode": "partial",
+      "ackReactionScope": "group-mentions",
+      "responseRules": {
+        "mode": "smart",
+        "minResponseInterval": 30,
+        "requireMention": false,
+        "smartThreshold": 0.7
+      }
+    }
+  }
+}

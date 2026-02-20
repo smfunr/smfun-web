@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sm.fun Admin - Wallet</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; 
+            color: #00ff00; 
+            font-family: 'Courier New', monospace;
+        }
+        .admin-header {
+            background: #111;
+            border-bottom: 2px solid #00ff00;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .admin-logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffff00;
+        }
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .user-badge {
+            background: linear-gradient(90deg, #ff00ff, #00ffff);
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .admin-nav {
+            background: #222;
+            border-bottom: 1px solid #00ff00;
+            padding: 10px 30px;
+            display: flex;
+            gap: 20px;
+        }
+        .nav-item {
+            color: #00ff00;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .nav-item:hover, .nav-item.active {
+            background: #333;
+            border-color: #00ff00;
+        }
+        .admin-content {
+            padding: 30px;
+        }
+        .page-title {
+            font-size: 28px;
+            color: #ffff00;
+            margin-bottom: 20px;
+        }
+        .logout-btn {
+            background: #333;
+            color: #ff0000;
+            border: 1px solid #ff0000;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .logout-btn:hover {
+            background: #ff0000;
+            color: #000;
+        }
+        .module-card {
+            background: #111;
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .module-title {
+            color: #00ffff;
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: #222;
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffff00;
+            margin: 5px 0;
+        }
+        .stat-label {
+            color: #888;
+            font-size: 12px;
+        }
+        .action-btn {
+            background: #222;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .action-btn:hover {
+            background: #333;
+        }
+        .action-btn.primary {
+            background: linear-gradient(90deg, #00ff00, #00ffff);
+            color: #000;
+            font-weight: bold;
+        }
+        .coming-soon-note {
+            text-align: center;
+            padding: 50px 20px;
+            color: #888;
+            font-size: 16px;
+            border: 2px dashed #00ff00;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <div class="admin-logo">sm.fun ADMIN</div>
+        <div class="admin-user">
+            <div>
+                <div style="font-weight: bold;" id="admin-email">smfunr@gmail.com</div>
+                <div style="font-size: 12px; color: #888;">Super Admin</div>
+            </div>
+            <div class="user-badge">OWNER</div>
+            <button class="logout-btn" id="logout-btn">LOGOUT</button>
+        </div>
+    </div>
+    
+    <div class="admin-nav">
+        <a href="dashboard.html" class="nav-item">📊 Dashboard</a>
+        <a href="users.html" class="nav-item">👥 Users</a>
+        <a href="wallet.html" class="nav-item active">💰 Wallet</a>
+        <a href="ico.html" class="nav-item">🚀 ICO</a>
+        <a href="transactions.html" class="nav-item">💸 Transactions</a>
+        <a href="config.html" class="nav-item">⚙️ Config</a>
+    </div>
+    
+    <div class="admin-content">
+        <div class="page-title">💰 Platform Wallet Management</div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Balance</div>
+                <div class="stat-value">542.8 ETH</div>
+                <div style="color: #00ff00; font-size: 12px;">≈ $1,068,492</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Today Inflow</div>
+                <div class="stat-value">+8.2 ETH</div>
+                <div style="color: #00ff00; font-size: 12px;">+1.5% increase</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Today Outflow</div>
+                <div class="stat-value">-3.5 ETH</div>
+                <div style="color: #ff0000; font-size: 12px;">Withdrawals</div>
+            </div>
+        </div>
+        
+        <div class="module-card">
+            <div class="module-title">💳 Quick Actions</div>
+            <button class="action-btn primary" onclick="withdrawFunds()">Withdraw Funds</button>
+            <button class="action-btn" onclick="depositAddress()">Show Deposit Address</button>
+            <button class="action-btn" onclick="viewTransactions()">View Transactions</button>
+            <button class="action-btn" onclick="setWithdrawalLimit()">Set Limits</button>
+            <button class="action-btn" onclick="exportWalletReport()">Export Report</button>
+        </div>
+        
+        <div class="module-card">
+            <div class="module-title">📊 Wallet Details</div>
+            <div class="coming-soon-note">
+                🚧 Wallet module under development<br>
+                <span style="font-size: 14px; margin-top: 10px; display: block;">
+                    Full functionality will be available soon
+                </span>
+                <div style="margin-top: 20px; font-size: 12px; color: #00ff00;">
+                    ✅ Basic framework ready<br>
+                    ⏳ Data integration in progress<br>
+                    🔄 Real-time updates coming
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Authentication check
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                const session = localStorage.getItem('admin_session');
+                if (!session) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                const sessionData = JSON.parse(session);
+                const loginTime = new Date(sessionData.loginTime);
+                const now = new Date();
+                const hoursDiff = (now - loginTime) / (1000 * 60 * 60);
+                
+                if (hoursDiff > 24) {
+                    localStorage.removeItem('admin_session');
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                // Update user display
+                const userDisplay = document.getElementById('admin-email');
+                if (userDisplay) {
+                    userDisplay.textContent = sessionData.email;
+                }
+                
+                // Logout button
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function() {
+                        localStorage.removeItem('admin_session');
+                        window.location.href = 'login.html';
+                    });
+                }
+                
+            } catch (error) {
+                localStorage.removeItem('admin_session');
+                window.location.href = 'login.html';
+            }
+        });
+        
+        // Placeholder functions for buttons
+        function withdrawFunds() { alert("Withdraw funds functionality coming soon"); }
+        function depositAddress() { alert("Deposit address: 0x742d35Cc6634C0532925a3b844Bc9e90F1b6c168"); }
+        function viewTransactions() { alert("Transaction history coming soon"); }
+        function setWithdrawalLimit() { alert("Withdrawal limit configuration coming soon"); }
+        function exportWalletReport() { alert("Wallet report export coming soon"); }
+    </script>
+</body>
+</html>

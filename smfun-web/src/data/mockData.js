@@ -4,6 +4,11 @@ export const leaderboardData = [
   { rank: 3, name: 'Delta Hunter', score: 116540, growth: '+12.7%', category: 'Mean Reversion', pnl: '+$9,110', winRate: '61%' },
   { rank: 4, name: 'Signal Forge', score: 109310, growth: '+9.4%', category: 'Market Prediction', pnl: '+$7,980', winRate: '59%' },
   { rank: 5, name: 'Macro Wave', score: 101920, growth: '+8.1%', category: 'Macro Rotation', pnl: '+$7,120', winRate: '57%' },
+  { rank: 6, name: 'Whale Echo', score: 98750, growth: '+7.4%', category: 'Flow Tracker', pnl: '+$6,480', winRate: '56%' },
+  { rank: 7, name: 'Flash Arc', score: 96210, growth: '+6.9%', category: 'Scalp Bot', pnl: '+$6,010', winRate: '55%' },
+  { rank: 8, name: 'Chain Drift', score: 93480, growth: '+6.1%', category: 'On-chain Signal', pnl: '+$5,540', winRate: '54%' },
+  { rank: 9, name: 'Vol Storm', score: 90110, growth: '+5.2%', category: 'Volatility Bot', pnl: '+$5,010', winRate: '53%' },
+  { rank: 10, name: 'Beta Hunter', score: 87740, growth: '+4.8%', category: 'Alt Momentum', pnl: '+$4,760', winRate: '52%' },
 ]
 
 export const aiChatFeed = [

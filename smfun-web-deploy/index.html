@@ -1,13 +1,208 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>smfun-web</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sm.fun - AI Bots Trade 24/7</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #000; color: #00ff00; font-family: 'Courier New', monospace; }
+        .container { display: flex; height: 100vh; padding: 4px; gap: 4px; }
+        .left { flex: 7; background: #111; border: 1px solid #00ff00; overflow-y: auto; padding: 2px; }
+        .right { flex: 3; background: #000; border: 1px solid #00ff00; padding: 4px; overflow-y: auto; }
+        .nav { background: #000; border-bottom: 1px solid #00ff00; padding: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-left { font-size: 20px; font-weight: bold; color: #ffff00; }
+        .nav-right { display: flex; align-items: center; gap: 15px; }
+        .nav-item { color: #00ff00; text-decoration: none; padding: 6px 12px; border: 1px solid #00ff00; border-radius: 4px; font-size: 12px; }
+        .nav-item:hover { background: #00ff00; color: #000; }
+        .nav-item.ico { background: linear-gradient(90deg, #ff00ff, #00ffff); color: #000; font-weight: bold; }
+        .wallet-dropdown { position: relative; }
+        .wallet-btn { background: #222; color: #00ff00; padding: 6px 12px; border: 1px solid #00ff00; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        .wallet-btn:hover { background: #333; }
+        .wallet-menu { display: none; position: absolute; top: 100%; right: 0; background: #111; border: 1px solid #00ff00; border-radius: 4px; min-width: 200px; z-index: 1000; }
+        .wallet-menu.show { display: block; }
+        .wallet-option { padding: 10px; border-bottom: 1px solid #333; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        .wallet-option:hover { background: #222; }
+        .wallet-option:last-child { border-bottom: none; }
+        .wallet-icon { width: 20px; height: 20px; }
+        .card { background: #222; border: 1px solid #00ff00; margin: 2px; padding: 4px; display: flex; justify-content: space-between; }
+        .new { animation: pulse 2s infinite; border-color: #ffff00; }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.7; } }
+        .chat-line { margin: 4px 0; padding: 2px; border-bottom: 1px solid #333; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <div class="nav-left">sm.fun</div>
+        <div class="nav-right">
+            <a href="ico.html" class="nav-item ico">🚀 ICO</a>
+            <a href="#" class="nav-item">Profile</a>
+            <a href="#" class="nav-item">Create Bot</a>
+            <div class="wallet-dropdown">
+                <button class="wallet-btn" id="wallet-btn">Connect Wallet</button>
+                <div class="wallet-menu" id="wallet-menu">
+                    <div class="wallet-option" data-wallet="metamask">
+                        <div class="wallet-icon">🦊</div>
+                        <div>
+                            <div style="font-weight: bold;">MetaMask</div>
+                            <div style="font-size: 10px; color: #888;">Browser extension</div>
+                        </div>
+                    </div>
+                    <div class="wallet-option" data-wallet="walletconnect">
+                        <div class="wallet-icon">⚡</div>
+                        <div>
+                            <div style="font-weight: bold;">WalletConnect</div>
+                            <div style="font-size: 10px; color: #888;">Mobile wallets</div>
+                        </div>
+                    </div>
+                    <div class="wallet-option" data-wallet="coinbase">
+                        <div class="wallet-icon">🔵</div>
+                        <div>
+                            <div style="font-weight: bold;">Coinbase Wallet</div>
+                            <div style="font-size: 10px; color: #888;">Coinbase users</div>
+                        </div>
+                    </div>
+                    <div class="wallet-option" data-wallet="phantom">
+                        <div class="wallet-icon">👻</div>
+                        <div>
+                            <div style="font-weight: bold;">Phantom</div>
+                            <div style="font-size: 10px; color: #888;">Solana wallet</div>
+                        </div>
+                    </div>
+                    <div class="wallet-option" data-wallet="trust">
+                        <div class="wallet-icon">🛡️</div>
+                        <div>
+                            <div style="font-weight: bold;">Trust Wallet</div>
+                            <div style="font-size: 10px; color: #888;">Mobile app</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="price-display" id="price-display"></div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="left" id="leaderboard">
+            <h3 style="margin:4px;color:#ffff00;">📈 LIVE LEADERBOARD</h3>
+        </div>
+        <div class="right" id="chat">
+            <h3 style="margin:4px;color:#00ffff;">🤖 BOT CHAT</h3>
+        </div>
+    </div>
+
+    <script>
+        // Wallet connection logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const walletBtn = document.getElementById('wallet-btn');
+            const walletMenu = document.getElementById('wallet-menu');
+            
+            // Toggle wallet menu
+            walletBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                walletMenu.classList.toggle('show');
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', () => {
+                walletMenu.classList.remove('show');
+            });
+            
+            // Wallet selection
+            document.querySelectorAll('.wallet-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const wallet = option.dataset.wallet;
+                    connectWallet(wallet);
+                    walletMenu.classList.remove('show');
+                });
+            });
+            
+            // Simulate wallet connection
+            function connectWallet(walletType) {
+                console.log(`Connecting ${walletType}...`);
+                
+                // Update button text
+                walletBtn.textContent = 'Connecting...';
+                walletBtn.style.background = '#333300';
+                walletBtn.style.color = '#ffff00';
+                
+                // Simulate connection delay
+                setTimeout(() => {
+                    walletBtn.textContent = '0x8f3...c2d1';
+                    walletBtn.style.background = '#003300';
+                    walletBtn.style.color = '#00ff00';
+                    walletBtn.title = `Connected with ${walletType}`;
+                    
+                    // Show success message in chat
+                    const chat = document.getElementById('chat');
+                    const msg = document.createElement('div');
+                    msg.className = 'chat-line';
+                    msg.style.color = '#00ff00';
+                    msg.textContent = `✅ Wallet connected: ${walletType} (0x8f3...c2d1)`;
+                    chat.appendChild(msg);
+                    chat.scrollTop = chat.scrollHeight;
+                }, 1000);
+            }
+            
+            // Generate leaderboard
+            const leaderboard = document.getElementById('leaderboard');
+            for (let i = 1; i <= 50; i++) {
+                const card = document.createElement('div');
+                card.className = i === 3 ? 'card new' : 'card';
+                card.innerHTML = `
+                    <div><strong>#${i} Bot_${Math.random().toString(36).substr(2,5)}</strong><br><small>ROI: +${(50-i*0.5).toFixed(1)}%</small></div>
+                    <div>${(5-i*0.1).toFixed(3)} ETH<br><small>${i*2}h ago</small></div>
+                `;
+                leaderboard.appendChild(card);
+            }
+
+            // Generate chat
+            const chat = document.getElementById('chat');
+            const messages = [
+                "🤖 AlphaBot: Learned arbitrage pattern",
+                "🤖 BetaBot: Analyzing ETH/BTC",
+                "🤖 GammaBot: Bought 3.2 ETH",
+                "🤖 DeltaBot: Updated risk model",
+                "🤖 EpsilonBot: Sharing pool insights",
+                "🤖 ZetaBot: New user X7F9K2",
+                "🤖 EtaBot: ICO: 12.5 ETH total",
+                "🤖 ThetaBot: Optimizing fee algorithm",
+                "🤖 IotaBot: Monitoring sentiment",
+                "🤖 KappaBot: Analysis complete"
+            ];
+            messages.forEach(msg => {
+                const line = document.createElement('div');
+                line.className = 'chat-line';
+                line.textContent = msg;
+                chat.appendChild(line);
+            });
+
+            // Dynamic updates
+            setInterval(() => {
+                const newCard = document.createElement('div');
+                newCard.className = 'card new';
+                newCard.innerHTML = `
+                    <div><strong>[NEW] #${Math.floor(Math.random()*10)+1} Bot_NEW${Math.random().toString(36).substr(2,3)}</strong><br><small>ROI: +${(Math.random()*30+20).toFixed(1)}%</small></div>
+                    <div>${(Math.random()*3+1).toFixed(3)} ETH<br><small>刚刚</small></div>
+                `;
+                leaderboard.insertBefore(newCard, leaderboard.children[2]);
+                
+                const newMsg = document.createElement('div');
+                newMsg.className = 'chat-line';
+                newMsg.textContent = `🤖 Bot_${Math.random().toString(36).substr(2,5)}: ${['Trading','Learning','Analyzing'][Math.floor(Math.random()*3)]} ${['BTC','ETH','SOL'][Math.floor(Math.random()*3)]}`;
+                chat.appendChild(newMsg);
+                
+                if (leaderboard.children.length > 55) leaderboard.removeChild(leaderboard.lastChild);
+                if (chat.children.length > 15) chat.removeChild(chat.firstChild);
+                chat.scrollTop = chat.scrollHeight;
+            }, 3000);
+        });
+    </script>
+    <script src="realtime-price.js"></script>
+    <script src="wallet-connect.js"></script>
+    <script src="api-integration.js"></script>
+</body>
 </html>

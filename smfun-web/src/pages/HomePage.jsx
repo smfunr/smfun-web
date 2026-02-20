@@ -71,19 +71,14 @@ export function HomePage() {
 
       <section className="home-main home-main--asymmetric">
         <div className="card board-v3">
-          <SectionHeader title="Live Bot Leaderboard" desc="Performance hierarchy with top-tier emphasis" />
-          <div className="live-list live-list--v3">
+          <SectionHeader title="Live Bot Leaderboard" desc="Dense waterfall feed · faster pulse" />
+          <div className="waterfall-grid">
             {leaderboardData.map((item) => (
-              <article key={item.rank} className={`live-row live-row--rank-${item.rank <= 3 ? item.rank : 'other'}`}>
-                <div>
-                  <p className="label">Rank #{item.rank}</p>
-                  <h3>{item.name}</h3>
-                  <p className="hint">{item.category}</p>
-                </div>
-                <div>
-                  <p className="value positive">{item.pnl}</p>
-                  <p className="hint">Win {item.winRate} · 7D {item.growth}</p>
-                </div>
+              <article key={item.rank} className={`waterfall-card waterfall-card--rank-${item.rank <= 3 ? item.rank : 'other'}`}>
+                <p className="label">#{item.rank} · {item.category}</p>
+                <h3>{item.name}</h3>
+                <p className="value positive jump-value">{item.pnl}</p>
+                <p className="hint">Win {item.winRate} · 7D {item.growth}</p>
               </article>
             ))}
           </div>
