@@ -3,202 +3,450 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>sm.fun Admin - Login</title>
+    <title>sm.fun Admin - Wallet Login</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             background: #000; 
             color: #00ff00; 
             font-family: 'Courier New', monospace;
-            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
         }
-        .login-box {
-            width: 400px;
+        .login-container {
             background: #111;
             border: 2px solid #00ff00;
-            padding: 30px;
-            border-radius: 8px;
-        }
-        h1 { color: #ffff00; text-align: center; margin-bottom: 10px; }
-        .subtitle { color: #00ffff; text-align: center; margin-bottom: 20px; font-size: 14px; }
-        .badge { 
-            background: linear-gradient(90deg, #ff00ff, #00ffff); 
-            color: #000; 
-            padding: 4px 12px; 
-            border-radius: 12px; 
-            font-size: 12px; 
-            font-weight: bold; 
-            display: inline-block; 
-            margin-bottom: 20px;
+            border-radius: 12px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
             text-align: center;
-            width: 100%;
         }
-        .input-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; color: #00ff00; font-size: 12px; }
-        input {
-            width: 100%;
-            padding: 10px;
+        .admin-logo {
+            font-size: 32px;
+            font-weight: bold;
+            color: #ffff00;
+            margin-bottom: 10px;
+        }
+        .admin-subtitle {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        .wallet-connect-box {
             background: #222;
             border: 1px solid #00ff00;
-            color: #00ff00;
-            font-family: 'Courier New', monospace;
-            border-radius: 4px;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
         }
-        input:focus { outline: none; border-color: #ffff00; background: #333; }
-        button {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(90deg, #00ff00, #00ffff);
-            color: #000;
-            border: none;
-            border-radius: 4px;
-            font-weight: bold;
+        .wallet-title {
+            color: #00ffff;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        .wallet-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .wallet-option {
+            background: #333;
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
             cursor: pointer;
-            margin-top: 10px;
+            transition: all 0.3s;
         }
-        button:hover { opacity: 0.9; }
-        button:disabled { opacity: 0.5; cursor: not-allowed; }
-        .message {
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 4px;
+        .wallet-option:hover {
+            background: #444;
+            transform: translateY(-2px);
+        }
+        .wallet-icon {
+            font-size: 24px;
+            width: 40px;
+            text-align: center;
+        }
+        .wallet-info {
+            flex: 1;
+            text-align: left;
+        }
+        .wallet-name {
+            color: #00ff00;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .wallet-desc {
+            color: #888;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+        .wallet-status {
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            background: #444;
+            color: #888;
+        }
+        .wallet-status.installed {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+        }
+        .login-status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
             display: none;
+        }
+        .login-status.success {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            display: block;
+        }
+        .login-status.error {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff0000;
+            color: #ff0000;
+            display: block;
+        }
+        .login-status.info {
+            background: rgba(0, 0, 255, 0.1);
+            border: 1px solid #0000ff;
+            color: #0000ff;
+            display: block;
+        }
+        .admin-note {
+            margin-top: 30px;
+            padding: 15px;
+            background: rgba(255, 255, 0, 0.1);
+            border: 1px solid #ffff00;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #ffff00;
+        }
+        .admin-address {
+            font-family: monospace;
+            background: #222;
+            padding: 8px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 11px;
+            word-break: break-all;
+        }
+        .back-link {
+            margin-top: 20px;
+            color: #888;
             font-size: 12px;
         }
-        .error { background: rgba(255,0,0,0.1); border: 1px solid #ff0000; color: #ff0000; display: block; }
-        .success { background: rgba(0,255,0,0.1); border: 1px solid #00ff00; color: #00ff00; display: block; }
-        .info { color: #888; font-size: 11px; margin-top: 20px; text-align: center; }
+        .back-link a {
+            color: #00ff00;
+            text-decoration: none;
+        }
+        .back-link a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-    <div class="login-box">
-        <h1>sm.fun ADMIN</h1>
-        <div class="subtitle">Super Admin Access</div>
-        <div class="badge">OWNER: smfunr@gmail.com</div>
+    <div class="login-container">
+        <div class="admin-logo">sm.fun ADMIN</div>
+        <div class="admin-subtitle">Connect your wallet to access admin panel</div>
         
-        <div class="input-group">
-            <label>Admin Email</label>
-            <input type="email" id="email" value="smfunr@gmail.com" readonly>
+        <div class="wallet-connect-box">
+            <div class="wallet-title">Select Wallet</div>
+            <div class="wallet-options" id="wallet-options">
+                <!-- Wallet options will be populated by JavaScript -->
+            </div>
         </div>
         
-        <div class="input-group">
-            <label>Admin Password</label>
-            <input type="password" id="password" placeholder="Enter password" autofocus>
+        <div class="login-status" id="login-status"></div>
+        
+        <div class="admin-note">
+            <strong>⚠️ Admin Access Only</strong><br>
+            Only authorized wallet addresses can access the admin panel.
+            <div class="admin-address" id="admin-address-display">
+                Loading authorized addresses...
+            </div>
         </div>
         
-        <div id="message" class="message"></div>
-        
-        <button id="login-btn">LOGIN AS SUPER ADMIN</button>
-        
-        <div class="info">
-            Default password: smfun_admin_2026<br>
-            All actions are logged and monitored.
+        <div class="back-link">
+            <a href="../index.html">← Back to Home</a>
         </div>
     </div>
 
     <script>
+        // 授权的管理员钱包地址
+        const ADMIN_WALLETS = [
+            '0x742d35Cc6634C0532925a3b844Bc9e90F1b6c168', // 示例地址，替换为实际管理员地址
+            '0x0000000000000000000000000000000000000000' // 添加更多管理员地址
+        ];
+        
+        // 钱包配置
+        const WALLETS = [
+            {
+                id: 'metamask',
+                name: 'MetaMask',
+                icon: '🦊',
+                description: 'Browser extension',
+                check: () => typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask
+            },
+            {
+                id: 'okx',
+                name: 'OKX Wallet',
+                icon: '🔶',
+                description: 'OKX official wallet',
+                check: () => typeof window.okxwallet !== 'undefined'
+            },
+            {
+                id: 'coinbase',
+                name: 'Coinbase Wallet',
+                icon: '🔵',
+                description: 'Coinbase browser wallet',
+                check: () => typeof window.ethereum !== 'undefined' && window.ethereum.isCoinbaseWallet
+            },
+            {
+                id: 'phantom',
+                name: 'Phantom',
+                icon: '👻',
+                description: 'Solana wallet',
+                check: () => typeof window.solana !== 'undefined' && window.solana.isPhantom
+            },
+            {
+                id: 'walletconnect',
+                name: 'WalletConnect',
+                icon: '⚡',
+                description: 'Mobile wallet connection',
+                check: () => true // Always available
+            }
+        ];
+        
+        // 初始化页面
         document.addEventListener('DOMContentLoaded', function() {
-            const emailInput = document.getElementById('email');
-            const passwordInput = document.getElementById('password');
-            const loginBtn = document.getElementById('login-btn');
-            const messageDiv = document.getElementById('message');
+            renderWalletOptions();
+            updateAdminAddressDisplay();
             
-            // Super admin credentials
-            const SUPER_ADMIN_EMAIL = 'smfunr@gmail.com';
-            const SUPER_ADMIN_PASSWORD = 'smfun_admin_2026';
-            
-            // Focus password field
-            passwordInput.focus();
-            
-            // Enter key to login
-            passwordInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    loginBtn.click();
-                }
-            });
-            
-            // Login button click
-            loginBtn.addEventListener('click', function() {
-                const email = emailInput.value.trim();
-                const password = passwordInput.value.trim();
-                
-                // Clear previous message
-                messageDiv.className = 'message';
-                messageDiv.style.display = 'none';
-                
-                // Validate
-                if (!email || !password) {
-                    showMessage('Please enter both email and password', 'error');
-                    return;
-                }
-                
-                if (email !== SUPER_ADMIN_EMAIL) {
-                    showMessage('Invalid admin email', 'error');
-                    return;
-                }
-                
-                if (password !== SUPER_ADMIN_PASSWORD) {
-                    showMessage('Invalid password', 'error');
-                    return;
-                }
-                
-                // Start login process
-                loginBtn.disabled = true;
-                loginBtn.textContent = '🔐 AUTHENTICATING...';
-                
-                // Simulate authentication
-                setTimeout(function() {
-                    // Create session
-                    const session = {
-                        email: email,
-                        token: 'admin_' + Date.now(),
-                        loginTime: new Date().toISOString()
-                    };
-                    
-                    localStorage.setItem('admin_session', JSON.stringify(session));
-                    
-                    // Show success
-                    showMessage('✅ Access granted. Redirecting...', 'success');
-                    loginBtn.textContent = '✅ LOGIN SUCCESSFUL';
-                    loginBtn.style.background = '#00ff00';
-                    
-                    // Redirect to dashboard
-                    setTimeout(function() {
-                        window.location.href = 'dashboard.html';
-                    }, 1000);
-                    
-                }, 1000);
-            });
-            
-            function showMessage(text, type) {
-                messageDiv.textContent = text;
-                messageDiv.className = 'message ' + type;
-                messageDiv.style.display = 'block';
-            }
-            
-            // Check if already logged in
-            try {
-                const session = localStorage.getItem('admin_session');
-                if (session) {
-                    const sessionData = JSON.parse(session);
-                    const loginTime = new Date(sessionData.loginTime);
-                    const now = new Date();
-                    const hoursDiff = (now - loginTime) / (1000 * 60 * 60);
-                    
-                    if (hoursDiff < 24) {
-                        // Auto-redirect if session is valid
-                        window.location.href = 'dashboard.html';
-                    } else {
-                        localStorage.removeItem('admin_session');
-                    }
-                }
-            } catch (e) {
-                localStorage.removeItem('admin_session');
-            }
+            // 检查是否已经登录
+            checkExistingSession();
         });
+        
+        // 渲染钱包选项
+        function renderWalletOptions() {
+            const container = document.getElementById('wallet-options');
+            container.innerHTML = '';
+            
+            WALLETS.forEach(wallet => {
+                const isInstalled = wallet.check();
+                
+                const option = document.createElement('div');
+                option.className = 'wallet-option';
+                option.onclick = () => connectWallet(wallet.id);
+                
+                option.innerHTML = `
+                    <div class="wallet-icon">${wallet.icon}</div>
+                    <div class="wallet-info">
+                        <div class="wallet-name">${wallet.name}</div>
+                        <div class="wallet-desc">${wallet.description}</div>
+                    </div>
+                    <div class="wallet-status ${isInstalled ? 'installed' : ''}">
+                        ${isInstalled ? 'Installed' : 'Not Installed'}
+                    </div>
+                `;
+                
+                container.appendChild(option);
+            });
+        }
+        
+        // 更新管理员地址显示
+        function updateAdminAddressDisplay() {
+            const display = document.getElementById('admin-address-display');
+            display.innerHTML = ADMIN_WALLETS.map(addr => 
+                `<div style="margin-bottom: 5px;">${addr}</div>`
+            ).join('');
+        }
+        
+        // 连接钱包
+        async function connectWallet(walletId) {
+            const wallet = WALLETS.find(w => w.id === walletId);
+            if (!wallet) {
+                showStatus('Invalid wallet selected', 'error');
+                return;
+            }
+            
+            // 检查钱包是否安装
+            if (!wallet.check() && walletId !== 'walletconnect') {
+                showStatus(`${wallet.name} is not installed. Please install it first.`, 'error');
+                return;
+            }
+            
+            showStatus(`Connecting to ${wallet.name}...`, 'info');
+            
+            try {
+                let provider;
+                
+                switch (walletId) {
+                    case 'metamask':
+                    case 'coinbase':
+                        provider = window.ethereum;
+                        break;
+                    case 'okx':
+                        provider = window.okxwallet;
+                        break;
+                    case 'phantom':
+                        provider = window.solana;
+                        break;
+                    case 'walletconnect':
+                        showStatus('WalletConnect integration coming soon', 'info');
+                        return;
+                    default:
+                        throw new Error('Unsupported wallet');
+                }
+                
+                // 请求账户访问
+                const accounts = await provider.request({ 
+                    method: 'eth_requestAccounts' 
+                });
+                
+                if (!accounts || accounts.length === 0) {
+                    throw new Error('No accounts found');
+                }
+                
+                const userAddress = accounts[0];
+                
+                // 检查是否是管理员
+                const isAdmin = ADMIN_WALLETS.some(adminAddr => 
+                    adminAddr.toLowerCase() === userAddress.toLowerCase()
+                );
+                
+                if (!isAdmin) {
+                    showStatus(`Wallet ${userAddress.substring(0, 8)}... is not authorized for admin access.`, 'error');
+                    return;
+                }
+                
+                // 获取链ID
+                const chainId = await provider.request({ 
+                    method: 'eth_chainId' 
+                });
+                
+                // 获取余额
+                const balance = await provider.request({
+                    method: 'eth_getBalance',
+                    params: [userAddress, 'latest']
+                });
+                
+                // 保存会话
+                const sessionData = {
+                    wallet: walletId,
+                    address: userAddress,
+                    chainId: parseInt(chainId),
+                    balance: formatBalance(balance),
+                    loginTime: new Date().toISOString()
+                };
+                
+                localStorage.setItem('admin_wallet_session', JSON.stringify(sessionData));
+                
+                // 显示成功消息
+                showStatus(`✅ Admin access granted! Welcome ${userAddress.substring(0, 8)}...`, 'success');
+                
+                // 重定向到仪表板
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Wallet connection failed:', error);
+                showStatus(`Connection failed: ${error.message}`, 'error');
+            }
+        }
+        
+        // 检查现有会话
+        function checkExistingSession() {
+            try {
+                const session = localStorage.getItem('admin_wallet_session');
+                if (!session) return;
+                
+                const sessionData = JSON.parse(session);
+                const loginTime = new Date(sessionData.loginTime);
+                const now = new Date();
+                const hoursDiff = (now - loginTime) / (1000 * 60 * 60);
+                
+                // 会话有效期24小时
+                if (hoursDiff > 24) {
+                    localStorage.removeItem('admin_wallet_session');
+                    return;
+                }
+                
+                // 检查钱包是否仍然是管理员
+                const isAdmin = ADMIN_WALLETS.some(adminAddr => 
+                    adminAddr.toLowerCase() === sessionData.address.toLowerCase()
+                );
+                
+                if (isAdmin) {
+                    // 自动重定向到仪表板
+                    window.location.href = 'dashboard.html';
+                } else {
+                    localStorage.removeItem('admin_wallet_session');
+                }
+                
+            } catch (error) {
+                localStorage.removeItem('admin_wallet_session');
+            }
+        }
+        
+        // 显示状态消息
+        function showStatus(message, type) {
+            const statusEl = document.getElementById('login-status');
+            statusEl.textContent = message;
+            statusEl.className = `login-status ${type}`;
+            
+            // 自动隐藏错误消息
+            if (type === 'error') {
+                setTimeout(() => {
+                    statusEl.style.display = 'none';
+                }, 5000);
+            }
+        }
+        
+        // 格式化余额
+        function formatBalance(balanceWei) {
+            if (!balanceWei) return '0';
+            
+            const wei = BigInt(balanceWei);
+            const eth = Number(wei) / 1e18;
+            
+            if (eth >= 1) {
+                return eth.toFixed(4);
+            } else if (eth >= 0.001) {
+                return eth.toFixed(6);
+            } else {
+                return eth.toFixed(8);
+            }
+        }
+        
+        // 监听钱包变化
+        if (typeof window.ethereum !== 'undefined') {
+            window.ethereum.on('accountsChanged', (accounts) => {
+                if (accounts.length === 0) {
+                    // 用户断开连接
+                    localStorage.removeItem('admin_wallet_session');
+                    showStatus('Wallet disconnected', 'info');
+                }
+            });
+            
+            window.ethereum.on('chainChanged', () => {
+                // 链变化时刷新页面
+                window.location.reload();
+            });
+        }
     </script>
 </body>
 </html>
